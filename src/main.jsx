@@ -1,7 +1,12 @@
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './styles.css';
+import ReactDOM from 'react-dom/client'
+import App from './App'
+// Inline: en Render el .css separado llegó a devolver 404;
+// embeberlo en el JS evita depender de /assets/*.css
+import cssText from './styles.css?inline'
 
-// Sin StrictMode: su doble montaje en desarrollo duplica la carga del
-// canvas Live2D y hace hablar dos veces al avatar.
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+const style = document.createElement('style')
+style.setAttribute('data-totem-css', '1')
+style.textContent = cssText
+document.head.appendChild(style)
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />)
