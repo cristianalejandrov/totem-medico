@@ -10,7 +10,7 @@
   --gris-suave: #f1f5f9;
   --exito: #10b981;
   --error: #ef4444;
-  --radio: 18px;
+  --radio: 24px;
   --sombra: 0 4px 18px rgba(2, 132, 199, 0.1);
 }
 
@@ -134,20 +134,20 @@ button {
   align-items: center;
   gap: 6px;
   color: rgba(255, 255, 255, 0.55);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 }
 
 .step-dot {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   background: rgba(255, 255, 255, 0.22);
   color: #fff;
   border: 1.5px solid rgba(255, 255, 255, 0.55);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -257,17 +257,26 @@ button {
 }
 
 .title {
-  font-size: 26px;
+  font-size: 48px;
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--ink);
+  margin-top: 20px;
+  line-height: 1.15;
 }
 
 .subtitle {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 500;
   color: var(--gris);
-  margin-top: -8px;
+  margin-top: -4px;
+}
+
+.subtitle strong {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--celeste-oscuro);
+  letter-spacing: 0.02em;
 }
 
 .subtitle.left {
@@ -279,15 +288,16 @@ button {
 
 /* ---- RUT ---- */
 .rut-display {
-  font-size: 34px;
+  font-size: 44px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-align: center;
   color: var(--celeste-oscuro);
-  background: var(--celeste-suave);
-  border: 2px solid var(--celeste-borde);
+  background: #ffffff;
+  border: 2px solid var(--ink);
   border-radius: var(--radio);
-  padding: 18px 12px;
+  padding: 20px 12px;
+  margin-top: 18px;
 }
 
 .rut-display.rut-empty {
@@ -296,8 +306,8 @@ button {
 
 .rut-display.rut-error {
   color: var(--error);
-  background: #fef2f2;
-  border-color: #fecaca;
+  background: #ffffff;
+  border-color: var(--error);
 }
 
 .error-text {
@@ -319,12 +329,12 @@ button {
 }
 
 .key {
-  height: 62px;
-  font-size: 24px;
+  height: 74px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--ink);
   background: var(--gris-suave);
-  border-radius: 14px;
+  border-radius: 22px;
   transition: transform 0.06s, background 0.15s;
 }
 
@@ -379,12 +389,14 @@ button {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  margin-top: 18px;
 }
 
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  margin-top: 18px;
 }
 
 .card-btn {
@@ -408,13 +420,28 @@ button {
 }
 
 .card-btn-big {
-  padding: 24px 20px;
+  padding: 28px 22px;
   border-color: var(--celeste-borde);
+  gap: 8px;
+}
+
+.card-btn-big .card-icon {
+  width: 52px;
+  height: 52px;
+}
+
+.card-btn-big .card-btn-title {
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.card-btn-big .card-btn-sub {
+  font-size: 16px;
 }
 
 .card-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   color: var(--celeste);
   margin-bottom: 4px;
 }
@@ -424,7 +451,7 @@ button {
   text-align: center;
   gap: 12px;
   padding: 20px 14px;
-  min-height: 128px;
+  min-height: 132px;
   border-color: var(--celeste-borde);
 }
 
@@ -436,7 +463,7 @@ button {
 .esp-icon {
   width: 52px;
   height: 52px;
-  border-radius: 16px;
+  border-radius: 20px;
   display: grid;
   place-items: center;
   background: var(--celeste-suave);
@@ -450,19 +477,19 @@ button {
 }
 
 .card-btn-esp .card-btn-title {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.25;
 }
 
 .card-btn-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.02em;
 }
 
 .card-btn-sub {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--gris);
 }
@@ -481,14 +508,15 @@ button {
 .list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .row-btn {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px;
+  gap: 16px;
+  padding: 20px 18px;
   border: 2px solid var(--gris-suave);
   border-radius: var(--radio);
   background: #fff;
@@ -507,37 +535,39 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .row-title {
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .row-sub {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--gris);
 }
 
 .row-chevron {
-  font-size: 26px;
+  font-size: 30px;
   color: var(--celeste);
   font-weight: 700;
 }
 
 .doctor-avatar {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: var(--celeste);
   color: #fff;
   display: grid;
   place-items: center;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 18px;
   flex-shrink: 0;
 }
 

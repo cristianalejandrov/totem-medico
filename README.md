@@ -17,7 +17,25 @@ npm install
 npm run dev
 ```
 
-Abrir http://localhost:5173 (idealmente en ventana vertical o F12 → modo dispositivo).
+Abrir http://192.168.88.127:5173 (o localhost si escuchas en 0.0.0.0). Idealmente ventana vertical / tótem.
+
+## Despliegue en Render (Blueprint)
+
+1. Sube el repo a GitHub (ya incluye `render.yaml`).
+2. En [Render](https://dashboard.render.com/) → **New** → **Blueprint** → conecta el repo.
+3. Render detecta `render.yaml` y crea el static site `totem-medico`.
+4. En Environment / durante el setup, pega:
+   - `VITE_GOOGLE_TTS_API_KEY` = tu clave de Google TTS  
+   (Vite la necesita en el **build**, no solo en runtime).
+5. Deploy. La URL queda tipo `https://totem-medico.onrender.com`.
+6. En Google Cloud, restringe la API key a ese dominio HTTP referrer.
+
+Build local de prueba:
+
+```bash
+npm run build
+npm run preview
+```
 
 ## Google Cloud TTS — qué necesitas
 
