@@ -87,7 +87,7 @@ export default function App() {
             <path d="M12 21s-7.5-4.6-9.5-9A5.4 5.4 0 0 1 12 6.3 5.4 5.4 0 0 1 21.5 12c-2 4.4-9.5 9-9.5 9Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
             <path d="M7.5 12h2.4l1.2-2.4 1.8 4.4 1.2-2h2.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className="brand-name">Clínica Vida</span>
+          <span className="brand-name">Clínica Inclusive</span>
         </div>
         <Stepper paso={PASO_POR_PANTALLA[screen]} />
       </header>

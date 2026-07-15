@@ -4,10 +4,10 @@ import { cleanRut, formatRut, validateRut } from '../utils/rut';
 import { tts } from '../voice/tts';
 
 const MSG_BIENVENIDA =
-  'Hola, bienvenido a Clínica Vida. Por favor, ingresa tu RUT con el teclado en pantalla. No te preocupes por los puntos ni el guion, se agregan automáticamente.';
-const MSG_ERROR = 'RUT incorrecto.';
+  'Hola, bienvenido a Clínica Inclusive. Por favor, ingresa tu número de cédula con el teclado en pantalla. No te preocupes por los puntos ni el guion, se agregan automáticamente.';
+const MSG_ERROR = 'El número de cédula es incorrecto.';
 const MSG_AYUDA =
-  'Revisa que el número y el dígito verificador estén bien escritos. El guion se agrega solo, únicamente escribe los números y la letra K si corresponde.';
+  'Revisa que el número y el dígito verificador estén bien escritos. El guion se agrega solo; escribe solo los números y la letra ka si corresponde.';
 
 export default function RutScreen({ onValid }) {
   const [rut, setRut] = useState('');

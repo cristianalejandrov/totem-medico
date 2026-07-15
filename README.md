@@ -1,4 +1,4 @@
-# Tótem Médico — Clínica Vida
+# Tótem Médico — Clínica Inclusive
 
 Tótem táctil vertical con asistente avatar 2D (Live2D) que guía al paciente por voz:
 ingreso de RUT → pedir hora / consultar reservas → especialidad → doctor → horario → pago según previsión.
@@ -39,7 +39,7 @@ Con la key configurada, el audio real de Google permite **lip-sync verdadero** (
 
 ## Voz utilizada
 
-`es-US-Neural2-A` (español latino, femenina). Se puede cambiar en `src/voice/tts.js` (`GOOGLE_VOICE`). Google no ofrece `es-CL`; alternativas: `es-US-Neural2-B/C`, `es-ES-Neural2-*`.
+`es-US-Neural2-A` (español latino, femenina). Se puede cambiar en `src/voice/tts.js` (`GOOGLE_VOICE`). Google no ofrece `es-CL`; alternativas: `es-US-Neural2-C`, `es-ES-Neural2-*`.
 
 ## Estructura
 
