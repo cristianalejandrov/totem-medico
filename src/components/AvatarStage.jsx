@@ -1,93 +1,137 @@
-import { useEffect, useRef, useState } from 'react';
-import { tts } from '../voice/tts';
+import { useEffect, useRef, useState } from 'react'
+import { tts } from '../voice/tts'
 
 /**
  * Escenario del avatar Live2D (mitad superior del tótem).
- * Renderiza el modelo con PixiJS y cada frame inyecta la apertura de boca
- * que expone el servicio TTS (lip-sync por amplitud de audio).
+ * Pixi crea su propio canvas (no reutilizamos el de React) para evitar el
+ * error "checkMaxIfStatementsInShader" tras HMR / destroy del contexto WebGL.
  */
 export default function AvatarStage({ caption }) {
-  const hostRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [status, setStatus] = useState('cargando'); // cargando | listo | error
+  const hostRef = useRef(null)
+  const [status, setStatus] = useState('cargando') // cargando | listo | error
 
   useEffect(() => {
-    let app = null;
-    let model = null;
-    let disposed = false;
+    const host = hostRef.current
+    if (!host) return
 
-    (async () => {
+    let app = null
+    let model = null
+    let disposed = false
+    let resizeObs = null
+
+    const waitForSize = () =>
+      new Promise((resolve) => {
+        const ready = () => host.clientWidth > 0 && host.clientHeight > 0
+        if (ready()) {
+          resolve()
+          return
+        }
+        const obs = new ResizeObserver(() => {
+          if (ready()) {
+            obs.disconnect()
+            resolve()
+          }
+        })
+        obs.observe(host)
+        setTimeout(() => {
+          obs.disconnect()
+          resolve()
+        }, 2000)
+      })
+
+    ;(async () => {
       try {
-        const PIXI = await import('pixi.js');
-        // pixi-live2d-display necesita window.PIXI para su Ticker interno
-        window.PIXI = PIXI;
-        const { Live2DModel } = await import('pixi-live2d-display/cubism4');
-        if (disposed) return;
+        await waitForSize()
+        if (disposed) return
 
+        const PIXI = await import('pixi.js')
+        window.PIXI = PIXI
+        const { Live2DModel } = await import('pixi-live2d-display/cubism4')
+        if (disposed) return
+
+        const width = Math.max(host.clientWidth, 1)
+        const height = Math.max(host.clientHeight, 1)
+
+        // NO pasar `view` con un canvas de React — Pixi crea el suyo.
         app = new PIXI.Application({
-          view: canvasRef.current,
+          width,
+          height,
           backgroundAlpha: 0,
           antialias: true,
           autoDensity: true,
           resolution: Math.min(window.devicePixelRatio || 1, 2),
-          resizeTo: hostRef.current,
-        });
+          powerPreference: 'high-performance',
+        })
+
+        const view = app.view
+        view.className = 'avatar-canvas'
+        view.style.cssText =
+          'position:absolute;inset:0;width:100%;height:100%;display:block;'
+        host.appendChild(view)
 
         model = await Live2DModel.from('/models/haru/haru_greeter_t03.model3.json', {
           motionPreload: 'IDLE',
           autoInteract: false,
-        });
+        })
         if (disposed) {
-          model.destroy();
-          return;
+          model.destroy()
+          return
         }
 
-        app.stage.addChild(model);
+        app.stage.addChild(model)
 
         const fit = () => {
-          const w = app.renderer.width / app.renderer.resolution;
-          const h = app.renderer.height / app.renderer.resolution;
-          const ow = model.internalModel.originalWidth || model.width;
-          // Mostramos cabeza y torso: el modelo se escala más grande que el
-          // contenedor y se ancla arriba.
-          const scale = (w / ow) * 1.55;
-          model.scale.set(scale);
-          model.anchor.set(0.5, 0.04);
-          model.position.set(w / 2, -h * 0.02);
-        };
-        fit();
-        window.addEventListener('resize', fit);
-        model.once('destroyed', () => window.removeEventListener('resize', fit));
+          if (!app || !model || disposed) return
+          const w = app.renderer.width / app.renderer.resolution
+          const h = app.renderer.height / app.renderer.resolution
+          const ow = model.internalModel.originalWidth || model.width
+          const scale = (w / ow) * 1.55
+          model.scale.set(scale)
+          model.anchor.set(0.5, 0.04)
+          model.position.set(w / 2, -h * 0.02)
+        }
+        fit()
 
-        // Lip-sync: justo antes de renderizar cada frame (después de motion,
-        // física y pose) pisamos el parámetro de boca con el valor del TTS.
-        const core = model.internalModel.coreModel;
+        resizeObs = new ResizeObserver(() => {
+          if (!app || disposed) return
+          const w = Math.max(host.clientWidth, 1)
+          const h = Math.max(host.clientHeight, 1)
+          app.renderer.resize(w, h)
+          fit()
+        })
+        resizeObs.observe(host)
+
+        const core = model.internalModel.coreModel
         model.internalModel.on('beforeModelUpdate', () => {
-          core.setParameterValueById('ParamMouthOpenY', tts.mouth);
-        });
+          core.setParameterValueById('ParamMouthOpenY', tts.mouth)
+        })
 
-        setStatus('listo');
+        if (!disposed) setStatus('listo')
       } catch (err) {
-        console.error('[Avatar] Error cargando Live2D:', err);
-        if (!disposed) setStatus('error');
+        console.error('[Avatar] Error cargando Live2D:', err)
+        if (!disposed) setStatus('error')
       }
-    })();
+    })()
 
     return () => {
-      disposed = true;
+      disposed = true
       try {
-        model?.destroy();
-        app?.destroy(false, { children: true });
+        resizeObs?.disconnect()
+        model?.destroy()
+        if (app) {
+          const view = app.view
+          app.destroy(true, { children: true, texture: true, baseTexture: true })
+          if (view?.parentNode) view.parentNode.removeChild(view)
+        }
       } catch {
         /* cleanup best-effort */
       }
-    };
-  }, []);
+    }
+  }, [])
 
   return (
     <div className="avatar-stage" ref={hostRef}>
       <div className="avatar-glow" aria-hidden="true" />
-      <canvas ref={canvasRef} className="avatar-canvas" />
       {status === 'cargando' && (
         <div className="avatar-loading">
           <span className="spinner" aria-hidden="true" />
@@ -103,5 +147,5 @@ export default function AvatarStage({ caption }) {
         </div>
       )}
     </div>
-  );
+  )
 }
