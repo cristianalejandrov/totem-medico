@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { tts } from '../voice/tts'
 
+// Solo expresiones alegres / tiernas (evita tristes: F03, F04, F08)
+const EXPRESIONES_FELICES = ['f04', 'f01', 'f00', 'f06'] // sonrisa, anima, suave, sonrojada
+
 /**
  * Escenario del avatar Live2D (mitad superior del tótem).
- * Pixi crea su propio canvas (no reutilizamos el de React) para evitar el
- * error "checkMaxIfStatementsInShader" tras HMR / destroy del contexto WebGL.
+ * Pixi crea su propio canvas para evitar errores WebGL tras HMR.
+ * Al tocar la cara/cuerpo reproduce un gesto Tap + expresión.
  */
 export default function AvatarStage({ caption }) {
   const hostRef = useRef(null)
@@ -18,6 +21,7 @@ export default function AvatarStage({ caption }) {
     let model = null
     let disposed = false
     let resizeObs = null
+    let lastTapAt = 0
 
     const waitForSize = () =>
       new Promise((resolve) => {
@@ -52,7 +56,6 @@ export default function AvatarStage({ caption }) {
         const width = Math.max(host.clientWidth, 1)
         const height = Math.max(host.clientHeight, 1)
 
-        // NO pasar `view` con un canvas de React — Pixi crea el suyo.
         app = new PIXI.Application({
           width,
           height,
@@ -66,7 +69,7 @@ export default function AvatarStage({ caption }) {
         const view = app.view
         view.className = 'avatar-canvas'
         view.style.cssText =
-          'position:absolute;inset:0;width:100%;height:100%;display:block;'
+          'position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation;cursor:pointer;'
         host.appendChild(view)
 
         model = await Live2DModel.from('/models/haru/haru_greeter_t03.model3.json', {
@@ -79,6 +82,28 @@ export default function AvatarStage({ caption }) {
         }
 
         app.stage.addChild(model)
+
+        // Toque → gesto Tap + expresión aleatoria
+        model.interactive = true
+        model.buttonMode = true
+        model.cursor = 'pointer'
+
+        const reaccionar = () => {
+          const now = Date.now()
+          if (now - lastTapAt < 700) return
+          lastTapAt = now
+          model.motion('Tap')
+          const expr =
+            EXPRESIONES_FELICES[Math.floor(Math.random() * EXPRESIONES_FELICES.length)]
+          try {
+            model.expression(expr)
+          } catch {
+            /* expression opcional */
+          }
+        }
+
+        model.on('hit', reaccionar)
+        model.on('pointertap', reaccionar)
 
         const fit = () => {
           if (!app || !model || disposed) return
