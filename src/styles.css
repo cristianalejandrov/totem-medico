@@ -44,6 +44,7 @@ button {
 
 /* ---- Marco vertical del tótem ---- */
 .totem {
+  position: relative;
   height: 100dvh;
   max-width: 560px;
   margin: 0 auto;
@@ -54,34 +55,46 @@ button {
   box-shadow: 0 0 60px rgba(15, 23, 42, 0.18);
 }
 
-/* ---- Header ---- */
+/* ---- Header transparente sobre el avatar ---- */
 .totem-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--gris-suave);
-  background: #fff;
-  z-index: 5;
+  padding: 16px 20px;
+  border-bottom: none;
+  background: transparent;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.totem-header > * {
+  pointer-events: auto;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--celeste-oscuro);
+  color: #ffffff;
+  text-shadow: 0 1px 8px rgba(2, 132, 199, 0.35);
 }
 
 .brand-icon {
   width: 28px;
   height: 28px;
+  filter: drop-shadow(0 1px 4px rgba(2, 132, 199, 0.35));
 }
 
 .brand-name {
   font-weight: 800;
   font-size: 17px;
   letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
 .stepper {
@@ -93,7 +106,7 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.55);
   font-size: 12px;
   font-weight: 600;
 }
@@ -104,27 +117,33 @@ button {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--gris-suave);
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
   font-size: 11px;
   font-weight: 700;
 }
 
 .step.active {
-  color: var(--celeste-oscuro);
+  color: #ffffff;
 }
 
 .step.active .step-dot {
-  background: var(--celeste);
-  color: #fff;
+  background: #ffffff;
+  color: var(--celeste-oscuro);
+  border-color: #ffffff;
 }
 
 .step.done .step-dot {
-  background: var(--exito);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--exito);
+  border-color: #ffffff;
 }
 
 .step-label {
   display: none;
+  color: #ffffff;
+  text-shadow: 0 1px 6px rgba(2, 132, 199, 0.4);
 }
 
 .step.active .step-label {
@@ -134,11 +153,12 @@ button {
 /* ---- Avatar (50% superior) ---- */
 .avatar-stage {
   position: relative;
-  height: 44%;
+  height: 48%;
   min-height: 300px;
-  background: linear-gradient(180deg, var(--celeste-suave) 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #0284c7 0%, #38bdf8 42%, #e0f2fe 78%, #ffffff 100%);
   overflow: hidden;
   flex-shrink: 0;
+  padding-top: 56px;
 }
 
 .avatar-glow {
@@ -368,6 +388,41 @@ button {
   height: 40px;
   color: var(--celeste);
   margin-bottom: 4px;
+}
+
+.card-btn-esp {
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 20px 14px;
+  min-height: 128px;
+  border-color: var(--celeste-borde);
+}
+
+.card-btn-esp:hover {
+  border-color: var(--celeste);
+  background: #f8fcff;
+}
+
+.esp-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: var(--celeste-suave);
+  color: var(--celeste-oscuro);
+  box-shadow: inset 0 0 0 1px rgba(14, 165, 233, 0.18);
+}
+
+.esp-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.card-btn-esp .card-btn-title {
+  font-size: 16px;
+  line-height: 1.25;
 }
 
 .card-btn-title {
