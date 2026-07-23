@@ -68,8 +68,9 @@ button {
   }
 }
 
-/* Portrait / tótem: a pantalla completa, sin bandas laterales */
-@media (orientation: portrait), (max-aspect-ratio: 3/4) {
+/* Portrait / tótem físico: pantalla completa (tablets y kioscos, no celular) */
+@media (orientation: portrait) and (min-width: 641px),
+  (min-width: 641px) and (max-aspect-ratio: 3/4) {
   body {
     background: #ffffff;
   }
@@ -2022,4 +2023,370 @@ button {
 
 .qh-onboard-summary {
   margin-top: 4px;
+}
+
+/* ====== Celular responsivo (tótem vertical ≥641px sin cambios) ====== */
+@media (max-width: 640px) {
+  body {
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .totem {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    height: 100svh;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .totem-header {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .brand-name {
+    font-size: 14px;
+  }
+
+  .brand-logo-latam {
+    height: 26px;
+  }
+
+  .brand-logo-quirohome {
+    height: 48px;
+    max-width: 140px;
+  }
+
+  .stepper {
+    gap: 6px;
+  }
+
+  .step {
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  .step-dot {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .step-label {
+    display: none !important;
+  }
+
+  .avatar-stage {
+    height: 34%;
+    min-height: 160px;
+    padding-top: 48px;
+  }
+
+  .totem.avatar-mapa-mode .avatar-stage,
+  .avatar-stage--compact {
+    height: 20%;
+    min-height: 100px;
+    padding-top: 44px;
+  }
+
+  .avatar-caption {
+    font-size: 12px;
+    padding: 8px 12px;
+    max-width: 92%;
+    bottom: 8px;
+  }
+
+  .totem-panel {
+    padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .screen {
+    padding: 14px 16px 20px;
+    gap: 12px;
+  }
+
+  .screen-paises {
+    padding: 14px 16px calc(48px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .title {
+    font-size: 32px;
+    margin-top: 8px;
+  }
+
+  .title-sm {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .subtitle strong {
+    font-size: 18px;
+  }
+
+  .rut-display {
+    font-size: 30px;
+    padding: 16px 10px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .key {
+    min-height: 56px;
+    padding: 12px 8px;
+    font-size: 26px;
+    border-radius: 16px;
+  }
+
+  .keypad {
+    gap: 8px;
+  }
+
+  .btn-primary {
+    min-height: 56px;
+    padding: 14px 18px;
+    font-size: 17px;
+  }
+
+  .row-btn {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+
+  .row-title {
+    font-size: 18px;
+  }
+
+  .row-sub {
+    font-size: 13px;
+  }
+
+  .row-chevron {
+    font-size: 24px;
+  }
+
+  .doctor-avatar {
+    width: 46px;
+    height: 46px;
+    font-size: 15px;
+  }
+
+  .card-btn {
+    padding: 14px;
+  }
+
+  .card-btn-big {
+    padding: 20px 16px;
+  }
+
+  .card-btn-big .card-btn-title {
+    font-size: 22px;
+  }
+
+  .card-btn-big .card-btn-sub {
+    font-size: 14px;
+  }
+
+  .card-btn-esp {
+    min-height: 108px;
+    padding: 16px 10px;
+  }
+
+  .esp-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 16px;
+  }
+
+  .esp-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .card-btn-esp .card-btn-title {
+    font-size: 15px;
+  }
+
+  .grid-2 {
+    gap: 10px;
+  }
+
+  .slots {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .slot {
+    height: 50px;
+    font-size: 16px;
+  }
+
+  .theme-switcher {
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    max-width: calc(100% - 24px);
+    gap: 4px;
+    padding: 3px;
+  }
+
+  .theme-pill {
+    padding: 6px 8px;
+    font-size: 10px;
+    gap: 3px;
+  }
+
+  .theme-pill-icon {
+    font-size: 12px;
+  }
+
+  .flight-map {
+    height: 200px;
+  }
+
+  .flight-map-compact .flight-map {
+    height: 160px;
+  }
+
+  .totem.avatar-mapa-mode .flight-map {
+    height: 240px;
+  }
+
+  .totem.avatar-mapa-mode .flight-map-compact .flight-map {
+    height: 180px;
+  }
+
+  .paises-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .destinos-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dest-flag {
+    font-size: 28px;
+  }
+
+  .card-btn-pais .dest-flag {
+    font-size: 32px;
+  }
+
+  .card-btn-pais .card-btn-title {
+    font-size: 14px;
+  }
+
+  .qh-tipo-card {
+    padding: 20px 16px;
+    gap: 14px;
+  }
+
+  .qh-tipo-card .card-btn-title {
+    font-size: 22px;
+  }
+
+  .qh-icon-lg {
+    width: 52px;
+    height: 52px;
+  }
+
+  .qh-servicio-row {
+    padding: 18px 14px;
+    min-height: auto;
+    gap: 12px;
+  }
+
+  .qh-servicio-row .row-title {
+    font-size: 16px;
+  }
+
+  .qh-servicio-row .row-sub {
+    font-size: 13px;
+  }
+
+  .qh-precio {
+    font-size: 20px;
+  }
+
+  .qh-cal-header {
+    font-size: 18px;
+    padding: 12px;
+  }
+
+  .qh-cal-weekdays span {
+    font-size: 10px;
+    padding: 8px 2px;
+  }
+
+  .qh-cal-day {
+    min-height: 40px;
+    font-size: 15px;
+  }
+
+  .qh-cal-empty {
+    min-height: 40px;
+  }
+
+  .qh-onboard-title {
+    font-size: 26px;
+  }
+
+  .qh-input-onboard {
+    min-height: 64px;
+    padding: 18px 16px;
+    font-size: 22px;
+  }
+
+  .qh-onboarding-rut .qh-rut-onboard {
+    font-size: 34px;
+  }
+
+  .qh-onboard-btn {
+    min-height: 60px;
+    font-size: 18px;
+  }
+
+  .summary-card {
+    padding: 14px 16px;
+  }
+
+  .boarding-code {
+    font-size: 28px;
+  }
+
+  .boarding-route {
+    padding: 16px 14px;
+  }
+}
+
+/* Celular en horizontal: más espacio al panel */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  .avatar-stage {
+    height: 28%;
+    min-height: 100px;
+    padding-top: 44px;
+  }
+
+  .totem.avatar-mapa-mode .avatar-stage {
+    height: 18%;
+    min-height: 72px;
+  }
+
+  .title {
+    font-size: 26px;
+    margin-top: 4px;
+  }
+
+  .screen {
+    padding: 10px 14px 16px;
+    gap: 10px;
+  }
+
+  .totem-panel {
+    padding-bottom: calc(44px + env(safe-area-inset-bottom, 0px));
+  }
 }
