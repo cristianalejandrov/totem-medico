@@ -976,6 +976,63 @@ button {
   color: var(--celeste-oscuro);
 }
 
+.totem[data-tema='clinica'] .avatar-stage {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f8fafc 35%,
+    #e0f2fe 70%,
+    #ffffff 100%
+  );
+}
+
+.totem[data-tema='clinica'] .avatar-glow {
+  background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08), transparent 65%);
+}
+
+.totem[data-tema='clinica'] .brand {
+  color: var(--celeste-oscuro);
+  text-shadow: none;
+}
+
+.totem[data-tema='clinica'] .brand-icon {
+  filter: none;
+  color: var(--celeste-oscuro);
+}
+
+.totem[data-tema='clinica'] .brand-name {
+  color: var(--celeste-oscuro);
+}
+
+.totem[data-tema='clinica'] .step {
+  color: rgba(2, 132, 199, 0.45);
+}
+
+.totem[data-tema='clinica'] .step.active {
+  color: var(--celeste-oscuro);
+}
+
+.totem[data-tema='clinica'] .step-label {
+  color: var(--celeste-oscuro);
+  text-shadow: none;
+}
+
+.totem[data-tema='clinica'] .step-dot {
+  background: rgba(14, 165, 233, 0.12);
+  border-color: rgba(14, 165, 233, 0.35);
+  color: var(--celeste-oscuro);
+}
+
+.totem[data-tema='clinica'] .step.active .step-dot {
+  background: var(--celeste);
+  color: #fff;
+  border-color: var(--celeste);
+}
+
+.totem[data-tema='clinica'] .step.done .step-dot {
+  color: var(--exito);
+}
+
 /* ---- Pantallas aeropuerto ---- */
 .screen-scroll {
   padding-bottom: 20px;
