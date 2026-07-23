@@ -14,10 +14,12 @@ import AeropuertoMenuScreen from './screens/aeropuerto/AeropuertoMenuScreen'
 import MisVuelosScreen from './screens/aeropuerto/MisVuelosScreen'
 import ReservarVueloScreen from './screens/aeropuerto/ReservarVueloScreen'
 import VueloConfirmacionScreen from './screens/aeropuerto/VueloConfirmacionScreen'
+import QuirohomeFlow from './screens/quirohome/QuirohomeFlow'
 import { addReserva } from './data/reservas'
 import { getTema } from './data/temas'
 import { tts } from './voice/tts'
 import latamLogo from './assets/latam.png'
+import quirohomeLogo from './assets/quirohome.webp'
 
 const PASO_CLINICA = {
   rut: 0,
@@ -40,6 +42,10 @@ const PASO_AEROPUERTO = {
 
 const INACTIVIDAD_MS = 120000
 
+function pantallaInicial(tema) {
+  return tema === 'quirohome' ? 'quirohome' : 'rut'
+}
+
 export default function App() {
   const [temaId, setTemaId] = useState('clinica')
   const tema = getTema(temaId)
@@ -50,6 +56,8 @@ export default function App() {
   const [vueloFinal, setVueloFinal] = useState(null)
   const [caption, setCaption] = useState(null)
   const [avatarMapMode, setAvatarMapMode] = useState(false)
+  const [quirohomePaso, setQuirohomePaso] = useState(0)
+  const [quirohomeKey, setQuirohomeKey] = useState(0)
 
   useEffect(() => {
     tts.onCaption = setCaption
@@ -66,8 +74,10 @@ export default function App() {
     setReservaFinal(null)
     setVueloFinal(null)
     setAvatarMapMode(false)
-    setScreen('rut')
-  }, [])
+    setQuirohomePaso(0)
+    setQuirohomeKey((k) => k + 1)
+    setScreen(pantallaInicial(temaId))
+  }, [temaId])
 
   const handleMapModeChange = useCallback((activo) => {
     setAvatarMapMode(activo)
@@ -82,7 +92,9 @@ export default function App() {
     setReservaFinal(null)
     setVueloFinal(null)
     setAvatarMapMode(false)
-    setScreen('rut')
+    setQuirohomePaso(0)
+    setQuirohomeKey((k) => k + 1)
+    setScreen(pantallaInicial(nuevo))
   }
 
   const idleTimer = useRef(null)
@@ -90,7 +102,13 @@ export default function App() {
     const arm = () => {
       clearTimeout(idleTimer.current)
       idleTimer.current = setTimeout(() => {
-        if (screen !== 'rut' && screen !== 'confirmacion') reset()
+        if (screen === 'confirmacion') return
+        if (temaId === 'quirohome' && screen === 'quirohome') {
+          setQuirohomeKey((k) => k + 1)
+          setQuirohomePaso(0)
+          return
+        }
+        if (screen !== 'rut') reset()
       }, INACTIVIDAD_MS)
     }
     arm()
@@ -99,7 +117,7 @@ export default function App() {
       clearTimeout(idleTimer.current)
       window.removeEventListener('pointerdown', arm)
     }
-  }, [screen, reset])
+  }, [screen, reset, temaId])
 
   const confirmarPago = ({ prevision, total }) => {
     const { especialidad, doctor, slot } = seleccion
@@ -118,13 +136,17 @@ export default function App() {
   const paso =
     temaId === 'clinica'
       ? PASO_CLINICA[screen] ?? 0
-      : PASO_AEROPUERTO[screen] ?? 0
+      : temaId === 'aeropuerto'
+        ? PASO_AEROPUERTO[screen] ?? 0
+        : quirohomePaso
 
   return (
     <div className={`totem ${avatarMapMode ? 'avatar-mapa-mode' : ''}`} data-tema={temaId}>
       <header className="totem-header">
         <div className="brand">
-          {temaId === 'aeropuerto' ? (
+          {temaId === 'quirohome' ? (
+            <img src={quirohomeLogo} alt="Quirohome" className="brand-logo-quirohome" />
+          ) : temaId === 'aeropuerto' ? (
             <img src={latamLogo} alt="LATAM" className="brand-logo-latam" />
           ) : (
             <svg className="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -145,7 +167,9 @@ export default function App() {
               />
             </svg>
           )}
-          {temaId !== 'aeropuerto' && <span className="brand-name">{tema.brand}</span>}
+          {temaId !== 'aeropuerto' && temaId !== 'quirohome' && (
+            <span className="brand-name">{tema.brand}</span>
+          )}
         </div>
         <Stepper paso={paso} pasos={tema.pasos} />
       </header>
@@ -264,6 +288,17 @@ export default function App() {
 
         {temaId === 'aeropuerto' && screen === 'confirmacion' && vueloFinal && (
           <VueloConfirmacionScreen reserva={vueloFinal} onFinish={reset} />
+        )}
+
+        {temaId === 'quirohome' && screen === 'quirohome' && (
+          <QuirohomeFlow
+            key={quirohomeKey}
+            onStepChange={setQuirohomePaso}
+            onFinish={() => {
+              setQuirohomeKey((k) => k + 1)
+              setQuirohomePaso(0)
+            }}
+          />
         )}
       </main>
 

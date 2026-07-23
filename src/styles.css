@@ -1680,3 +1680,178 @@ button {
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
 }
+
+/* ====== Tema Quirohome (blanco + verde) ====== */
+.totem[data-tema='quirohome'] {
+  --celeste: #16a34a;
+  --celeste-oscuro: #15803d;
+  --celeste-suave: #dcfce7;
+  --celeste-borde: #bbf7d0;
+  --sombra: 0 4px 18px rgba(22, 163, 74, 0.12);
+}
+
+.totem[data-tema='quirohome'] .brand {
+  color: #15803d;
+  text-shadow: none;
+}
+
+.brand-logo-quirohome {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+.totem[data-tema='quirohome'] .step {
+  color: rgba(21, 128, 61, 0.45);
+}
+
+.totem[data-tema='quirohome'] .step.active {
+  color: #15803d;
+}
+
+.totem[data-tema='quirohome'] .step-label {
+  color: #15803d;
+  text-shadow: none;
+  font-size: 11px;
+}
+
+.totem[data-tema='quirohome'] .step-dot {
+  background: rgba(22, 163, 74, 0.12);
+  border-color: rgba(22, 163, 74, 0.35);
+  color: #15803d;
+}
+
+.totem[data-tema='quirohome'] .step.active .step-dot {
+  background: #16a34a;
+  color: #fff;
+  border-color: #16a34a;
+}
+
+.totem[data-tema='quirohome'] .avatar-stage {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f0fdf4 35%,
+    #dcfce7 70%,
+    #ffffff 100%
+  );
+}
+
+.totem[data-tema='quirohome'] .avatar-glow {
+  background: radial-gradient(ellipse at center, rgba(22, 163, 74, 0.08), transparent 65%);
+}
+
+.totem[data-tema='quirohome'] .theme-pill.active {
+  color: #15803d;
+}
+
+.totem[data-tema='quirohome'] .btn-primary {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.totem[data-tema='quirohome'] .btn-primary:active {
+  background: #166534;
+}
+
+.totem[data-tema='quirohome'] .doctor-avatar,
+.totem[data-tema='quirohome'] .qh-avatar {
+  background: #16a34a;
+}
+
+.theme-switcher {
+  max-width: 96%;
+  flex-wrap: nowrap;
+}
+
+.theme-pill {
+  padding: 7px 10px;
+  font-size: 11px;
+}
+
+.qh-servicio-row {
+  align-items: center;
+}
+
+.qh-precio {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--celeste-oscuro);
+  white-space: nowrap;
+}
+
+.qh-calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.qh-dia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  padding: 8px 4px;
+  border-radius: 14px;
+  border: 2px solid var(--celeste-borde);
+  background: #fff;
+  font-weight: 700;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.qh-dia.active {
+  border-color: var(--celeste);
+  background: var(--celeste-suave);
+  color: var(--celeste-oscuro);
+}
+
+.qh-dia-off {
+  opacity: 0.35;
+  background: var(--gris-suave);
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+.qh-dia-num {
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.qh-dia-wd {
+  font-size: 11px;
+  text-transform: capitalize;
+  color: var(--gris);
+  font-weight: 600;
+}
+
+.qh-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qh-input {
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 16px;
+  border: 2px solid var(--celeste-borde);
+  border-radius: var(--radio);
+  font-size: 18px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--ink);
+  background: #fff;
+}
+
+.qh-input:focus {
+  outline: none;
+  border-color: var(--celeste);
+}
+
+.qh-rut {
+  margin-bottom: 4px;
+}
+
+.screen-quirohome .keypad {
+  margin-bottom: 4px;
+}

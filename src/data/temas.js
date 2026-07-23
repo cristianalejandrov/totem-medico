@@ -17,6 +17,14 @@ export const TEMAS = {
     pasos: ['Identificación', 'Reserva', 'Confirmación'],
     icon: 'flight',
   },
+  quirohome: {
+    id: 'quirohome',
+    label: 'Quirohome',
+    brand: 'Quirohome',
+    avatarModel: '/models/haru/haru_greeter_t03.clinica.model3.json',
+    pasos: ['Sucursal', 'Consulta', 'Profesional', 'Agenda', 'Reserva'],
+    icon: 'wellness',
+  },
 }
 
 export function getTema(id) {
