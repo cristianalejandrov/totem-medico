@@ -7,11 +7,21 @@ export default function AvatarStage({
   caption,
   modelUrl = '/models/haru/haru_greeter_t03.model3.json',
   compact = false,
+  onReady,
 }) {
   const hostRef = useRef(null)
   const [status, setStatus] = useState('cargando')
   const compactRef = useRef(compact)
   const fitRef = useRef(null)
+  const readyRef = useRef(onReady)
+
+  readyRef.current = onReady
+
+  useEffect(() => {
+    if (status === 'listo' || status === 'error') {
+      readyRef.current?.()
+    }
+  }, [status])
 
   compactRef.current = compact
 

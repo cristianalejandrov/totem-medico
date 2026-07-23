@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import AvatarStage from './components/AvatarStage'
 import Stepper from './components/Stepper'
 import ThemeSwitcher from './components/ThemeSwitcher'
+import ThemeSplash from './components/ThemeSplash'
 import RutScreen from './screens/RutScreen'
 import MenuScreen from './screens/MenuScreen'
 import EspecialidadesScreen from './screens/EspecialidadesScreen'
@@ -41,6 +42,8 @@ const PASO_AEROPUERTO = {
 }
 
 const INACTIVIDAD_MS = 120000
+const SPLASH_MIN_MS = 550
+const SPLASH_FADE_MS = 420
 
 function pantallaInicial(tema) {
   return tema === 'quirohome' ? 'quirohome' : 'rut'
@@ -58,6 +61,11 @@ export default function App() {
   const [avatarMapMode, setAvatarMapMode] = useState(false)
   const [quirohomePaso, setQuirohomePaso] = useState(0)
   const [quirohomeKey, setQuirohomeKey] = useState(0)
+  const [showSplash, setShowSplash] = useState(true)
+  const [splashPhase, setSplashPhase] = useState('in')
+  const [sessionReady, setSessionReady] = useState(false)
+  const [avatarReady, setAvatarReady] = useState(false)
+  const splashTimer = useRef(null)
 
   useEffect(() => {
     tts.onCaption = setCaption
@@ -66,6 +74,30 @@ export default function App() {
       tts.cancel()
     }
   }, [])
+
+  useEffect(() => {
+    clearTimeout(splashTimer.current)
+    setShowSplash(true)
+    setSplashPhase('in')
+    setSessionReady(false)
+    setAvatarReady(false)
+  }, [temaId])
+
+  const handleAvatarReady = useCallback(() => {
+    setAvatarReady(true)
+  }, [])
+
+  useEffect(() => {
+    if (!showSplash || !avatarReady) return
+    splashTimer.current = setTimeout(() => {
+      setSplashPhase('out')
+      splashTimer.current = setTimeout(() => {
+        setShowSplash(false)
+        setSessionReady(true)
+      }, SPLASH_FADE_MS)
+    }, SPLASH_MIN_MS)
+    return () => clearTimeout(splashTimer.current)
+  }, [showSplash, avatarReady])
 
   const reset = useCallback(() => {
     tts.cancel()
@@ -142,6 +174,8 @@ export default function App() {
 
   return (
     <div className={`totem ${avatarMapMode ? 'avatar-mapa-mode' : ''}`} data-tema={temaId}>
+      {showSplash && <ThemeSplash temaId={temaId} phase={splashPhase} />}
+
       <header className="totem-header">
         <div className="brand">
           {temaId === 'quirohome' ? (
@@ -177,14 +211,16 @@ export default function App() {
       <AvatarStage
         caption={caption}
         modelUrl={tema.avatarModel}
-        key={tema.avatarModel}
+        key={temaId}
         compact={avatarMapMode}
+        onReady={handleAvatarReady}
       />
 
       <main className="totem-panel">
         {screen === 'rut' && (
           <RutScreen
             tema={temaId}
+            sessionReady={sessionReady}
             onValid={(r) => {
               setRut(r)
               setScreen('menu')
@@ -293,6 +329,7 @@ export default function App() {
         {temaId === 'quirohome' && screen === 'quirohome' && (
           <QuirohomeFlow
             key={quirohomeKey}
+            sessionReady={sessionReady}
             onStepChange={setQuirohomePaso}
             onFinish={() => {
               setQuirohomeKey((k) => k + 1)

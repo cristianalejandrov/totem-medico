@@ -2699,3 +2699,121 @@ button {
     padding-bottom: calc(44px + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* ====== Splash por tema ====== */
+.theme-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  opacity: 1;
+  transition: opacity 0.42s ease;
+  pointer-events: all;
+}
+
+.theme-splash--out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.theme-splash--clinica {
+  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 55%, #ffffff 100%);
+}
+
+.theme-splash--aeropuerto {
+  background: linear-gradient(180deg, #ffffff 0%, #eef2ff 50%, #ffffff 100%);
+}
+
+.theme-splash--quirohome {
+  background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 50%, #ffffff 100%);
+}
+
+.theme-splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 24px;
+  animation: splashIn 0.45s ease-out;
+}
+
+.theme-splash-logo-latam {
+  height: 72px;
+  width: auto;
+  object-fit: contain;
+}
+
+.theme-splash-logo-quirohome {
+  height: 96px;
+  width: auto;
+  max-width: 280px;
+  object-fit: contain;
+}
+
+.theme-splash-clinica {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--celeste-oscuro);
+}
+
+.theme-splash-icon {
+  width: 72px;
+  height: 72px;
+}
+
+.theme-splash-brand {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+.theme-splash-spinner {
+  width: 36px;
+  height: 36px;
+}
+
+@keyframes splashIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .theme-splash-logo-latam {
+    height: 52px;
+  }
+
+  .theme-splash-logo-quirohome {
+    height: 64px;
+    max-width: 200px;
+  }
+
+  .theme-splash-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .theme-splash-brand {
+    font-size: 22px;
+  }
+
+  .theme-splash-inner {
+    gap: 20px;
+  }
+
+  .theme-splash-spinner {
+    width: 28px;
+    height: 28px;
+  }
+}
