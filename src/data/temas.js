@@ -12,7 +12,7 @@ export const TEMAS = {
   aeropuerto: {
     id: 'aeropuerto',
     label: 'Aeropuerto',
-    brand: 'Aeropuerto Inclusive',
+    brand: 'LATAM',
     avatarModel: '/models/haru/haru_greeter_t03.model3.json',
     pasos: ['Identificación', 'Reserva', 'Confirmación'],
     icon: 'flight',

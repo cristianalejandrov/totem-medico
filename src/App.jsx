@@ -17,6 +17,7 @@ import VueloConfirmacionScreen from './screens/aeropuerto/VueloConfirmacionScree
 import { addReserva } from './data/reservas'
 import { getTema } from './data/temas'
 import { tts } from './voice/tts'
+import latamLogo from './assets/latam.png'
 
 const PASO_CLINICA = {
   rut: 0,
@@ -117,15 +118,7 @@ export default function App() {
       <header className="totem-header">
         <div className="brand">
           {temaId === 'aeropuerto' ? (
-            <svg className="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M2 16h20l-2-6H4l-2 6Zm8-14 2 6h4l-2-6h-4Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <img src={latamLogo} alt="LATAM" className="brand-logo-latam" />
           ) : (
             <svg className="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
               <path
@@ -145,7 +138,7 @@ export default function App() {
               />
             </svg>
           )}
-          <span className="brand-name">{tema.brand}</span>
+          {temaId !== 'aeropuerto' && <span className="brand-name">{tema.brand}</span>}
         </div>
         <Stepper paso={paso} pasos={tema.pasos} />
       </header>

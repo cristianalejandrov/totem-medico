@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
+import WorldMap from '../../components/WorldMap'
+import { getDestinoById, getPaisById, PAISES } from '../../data/destinos'
 import {
-  DESTINOS,
   buscarVuelos,
   formatCLP,
   formatFechaVuelo,
@@ -12,6 +13,8 @@ import { tts } from '../../voice/tts'
 export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
   const dias = useMemo(() => proximosDias(12), [])
   const [paso, setPaso] = useState(0)
+  const [subDestino, setSubDestino] = useState('pais')
+  const [paisId, setPaisId] = useState(null)
   const [destinoId, setDestinoId] = useState(null)
   const [idaYVuelta, setIdaYVuelta] = useState(false)
   const [fechaIda, setFechaIda] = useState(null)
@@ -19,8 +22,11 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
   const [vueloSel, setVueloSel] = useState(null)
   const [pasajeros, setPasajeros] = useState(1)
 
+  const pais = getPaisById(paisId)
+  const destino = getDestinoById(destinoId)
+
   useEffect(() => {
-    tts.speak('Elige tu destino para comenzar la reserva.')
+    tts.speak('Elige el país de destino. Si viajas dentro de Chile, podrás elegir la región.')
   }, [])
 
   const vuelos = useMemo(() => {
@@ -33,11 +39,25 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
     })
   }, [destinoId, fechaIda, fechaVuelta, idaYVuelta])
 
-  const destino = DESTINOS.find((d) => d.id === destinoId)
-
   const irPaso = (n, msg) => {
     setPaso(n)
     if (msg) tts.speak(msg)
+  }
+
+  const elegirPais = (p) => {
+    setPaisId(p.id)
+    setDestinoId(null)
+    if (p.esNacional || p.destinos.length > 1) {
+      setSubDestino('ciudad')
+      tts.speak(
+        p.esNacional
+          ? 'Elige la región de destino dentro de Chile.'
+          : `Elige la ciudad en ${p.nombre}.`,
+      )
+    } else {
+      setDestinoId(p.destinos[0].id)
+      setSubDestino('ciudad')
+    }
   }
 
   const confirmar = () => {
@@ -47,37 +67,92 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
     onReservado(reserva)
   }
 
+  const volverDestino = () => {
+    if (subDestino === 'ciudad') {
+      setSubDestino('pais')
+      setPaisId(null)
+      setDestinoId(null)
+    } else if (paso === 0) {
+      onBack()
+    } else {
+      setPaso((p) => p - 1)
+    }
+  }
+
   return (
     <div className="screen screen-scroll">
       <h1 className="title">Reservar vuelo</h1>
       <p className="subtitle">
-        {paso === 0 && 'Selecciona país y ciudad de destino'}
+        {paso === 0 && subDestino === 'pais' && 'Selecciona el país de destino'}
+        {paso === 0 && subDestino === 'ciudad' && pais?.esNacional && 'Elige región de destino'}
+        {paso === 0 && subDestino === 'ciudad' && pais && !pais.esNacional && `Ciudad en ${pais.nombre}`}
         {paso === 1 && 'Tipo de viaje y fechas'}
         {paso === 2 && 'Elige tu horario'}
         {paso === 3 && 'Confirma tu reserva'}
       </p>
 
-      {paso === 0 && (
+      {paso === 0 && subDestino === 'pais' && (
         <>
-          <div className="grid-2 destinos-grid">
-            {DESTINOS.map((d) => (
+          <WorldMap />
+          <div className="paises-grid">
+            {PAISES.map((p) => (
               <button
-                key={d.id}
+                key={p.id}
                 type="button"
-                className={`card-btn card-btn-esp ${destinoId === d.id ? 'selected' : ''}`}
-                onClick={() => setDestinoId(d.id)}
+                className={`card-btn card-btn-pais ${paisId === p.id ? 'selected' : ''}`}
+                onClick={() => elegirPais(p)}
               >
-                <span className="dest-flag">{d.bandera}</span>
-                <span className="card-btn-title">{d.ciudad}</span>
-                <span className="card-btn-sub">{d.pais} · {d.codigo}</span>
+                <span className="dest-flag">{p.bandera}</span>
+                <span className="card-btn-title">{p.nombre}</span>
+                <span className="card-btn-sub">
+                  {p.esNacional
+                    ? `${p.destinos.length} regiones`
+                    : p.destinos.find((d) => d.capital)?.ciudad || p.destinos[0].ciudad}
+                </span>
               </button>
             ))}
           </div>
+        </>
+      )}
+
+      {paso === 0 && subDestino === 'ciudad' && pais && (
+        <>
+          <WorldMap pais={pais} destino={destino} />
+
+          <div className={pais.esNacional ? 'regiones-list' : 'grid-2 destinos-grid'}>
+            {pais.destinos.map((d) => {
+              const full = getDestinoById(d.id)
+              return (
+                <button
+                  key={d.id}
+                  type="button"
+                  className={`row-btn destino-row ${destinoId === d.id ? 'selected' : ''}`}
+                  onClick={() => setDestinoId(d.id)}
+                >
+                  <div className="row-main">
+                    <span className="row-title">
+                      {d.ciudad}
+                      {d.capital && !pais.esNacional && (
+                        <span className="chip chip-capital">Capital</span>
+                      )}
+                    </span>
+                    <span className="row-sub">
+                      {d.region || full?.pais} · {d.codigo}
+                    </span>
+                  </div>
+                  <span className="row-chevron">›</span>
+                </button>
+              )
+            })}
+          </div>
+
           <button
             type="button"
             className="btn-primary"
             disabled={!destinoId}
-            onClick={() => irPaso(1, 'Indica si es solo ida o ida y vuelta, y elige las fechas.')}
+            onClick={() =>
+              irPaso(1, 'Indica si es solo ida o ida y vuelta, y elige las fechas.')
+            }
           >
             Continuar
           </button>
@@ -86,6 +161,17 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
 
       {paso === 1 && (
         <>
+          {destino && (
+            <div className="route-banner route-banner-light">
+              <WorldMap pais={pais} destino={destino} />
+              <span className="route-codes">SCL → {destino.codigo}</span>
+              <span className="route-sub">
+                {destino.ciudad}
+                {destino.region ? ` · ${destino.region}` : ''}, {destino.pais}
+              </span>
+            </div>
+          )}
+
           <div className="segmented">
             <button
               type="button"
@@ -153,8 +239,8 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
 
       {paso === 2 && (
         <>
-          <div className="route-banner">
-            <span>SCL → {destino?.codigo}</span>
+          <div className="route-banner route-banner-light">
+            <span className="route-codes">SCL → {destino?.codigo}</span>
             <span className="route-sub">{destino?.ciudad}</span>
           </div>
           <div className="list">
@@ -166,12 +252,16 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
                 onClick={() => setVueloSel(v)}
               >
                 <div className="row-main">
-                  <span className="row-title">{v.ida.hora} · {v.ida.vuelo}</span>
+                  <span className="row-title">
+                    {v.ida.hora} · {v.ida.vuelo}
+                  </span>
                   <span className="row-sub">
                     Puerta {v.ida.puerta} · {v.ida.terminal} · {v.asientos} asientos
                   </span>
                   {v.vuelta && (
-                    <span className="row-sub">Vuelta {v.vuelta.hora} · {v.vuelta.vuelo}</span>
+                    <span className="row-sub">
+                      Vuelta {v.vuelta.hora} · {v.vuelta.vuelo}
+                    </span>
                   )}
                 </div>
                 <span className="flight-price">{formatCLP(v.precio)}</span>
@@ -194,24 +284,34 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
           <div className="summary-card">
             <div className="summary-row">
               <span>Ruta</span>
-              <strong>SCL → {vueloSel.destino.codigo}</strong>
+              <strong>
+                SCL → {vueloSel.destino.codigo} · {vueloSel.destino.ciudad}
+              </strong>
             </div>
             <div className="summary-row">
               <span>Ida</span>
-              <strong>{formatFechaVuelo(vueloSel.ida.fecha)} · {vueloSel.ida.hora}</strong>
+              <strong>
+                {formatFechaVuelo(vueloSel.ida.fecha)} · {vueloSel.ida.hora}
+              </strong>
             </div>
             {vueloSel.vuelta && (
               <div className="summary-row">
                 <span>Vuelta</span>
-                <strong>{formatFechaVuelo(vueloSel.vuelta.fecha)} · {vueloSel.vuelta.hora}</strong>
+                <strong>
+                  {formatFechaVuelo(vueloSel.vuelta.fecha)} · {vueloSel.vuelta.hora}
+                </strong>
               </div>
             )}
             <div className="summary-row">
               <span>Pasajeros</span>
               <div className="stepper-mini">
-                <button type="button" onClick={() => setPasajeros((p) => Math.max(1, p - 1))}>−</button>
+                <button type="button" onClick={() => setPasajeros((p) => Math.max(1, p - 1))}>
+                  −
+                </button>
                 <span>{pasajeros}</span>
-                <button type="button" onClick={() => setPasajeros((p) => Math.min(6, p + 1))}>+</button>
+                <button type="button" onClick={() => setPasajeros((p) => Math.min(6, p + 1))}>
+                  +
+                </button>
               </div>
             </div>
             <div className="summary-row total">
@@ -225,14 +325,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
         </>
       )}
 
-      <button
-        type="button"
-        className="btn-ghost"
-        onClick={() => {
-          if (paso === 0) onBack()
-          else setPaso((p) => p - 1)
-        }}
-      >
+      <button type="button" className="btn-ghost" onClick={volverDestino}>
         ← Volver
       </button>
     </div>

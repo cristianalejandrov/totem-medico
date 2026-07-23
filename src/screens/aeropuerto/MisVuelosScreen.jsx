@@ -44,7 +44,9 @@ export default function MisVuelosScreen({ rut, onBack, onReservar }) {
                 <div>
                   <strong>SCL → {v.destino.codigo}</strong>
                   <span className="row-sub">
-                    {v.destino.ciudad}, {v.destino.pais}
+                    {v.destino.region
+                      ? `${v.destino.region} · ${v.destino.codigo}`
+                      : `${v.destino.pais} · ${v.destino.codigo}`}
                   </span>
                 </div>
               </div>

@@ -846,43 +846,81 @@ button {
   line-height: 1;
 }
 
-/* ====== Tema Aeropuerto ====== */
+/* ====== Tema Aeropuerto (LATAM) ====== */
 .totem[data-tema='aeropuerto'] {
-  --celeste: #f59e0b;
-  --celeste-oscuro: #d97706;
-  --celeste-suave: #fef3c7;
-  --celeste-borde: #fde68a;
-  --sombra: 0 4px 18px rgba(217, 119, 6, 0.15);
+  --celeste: #1b0088;
+  --celeste-oscuro: #140066;
+  --celeste-suave: #eef2ff;
+  --celeste-borde: #c7d2fe;
+  --sombra: 0 4px 18px rgba(27, 0, 136, 0.12);
 }
 
 .totem[data-tema='aeropuerto'] .brand {
-  text-shadow: 0 1px 8px rgba(15, 23, 42, 0.45);
+  color: #1b0088;
+  text-shadow: none;
 }
 
-.totem[data-tema='aeropuerto'] .brand-icon {
-  filter: drop-shadow(0 1px 4px rgba(15, 23, 42, 0.35));
+.brand-logo-latam {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(27, 0, 136, 0.15));
+}
+
+.totem[data-tema='aeropuerto'] .step {
+  color: rgba(27, 0, 136, 0.45);
+}
+
+.totem[data-tema='aeropuerto'] .step.active {
+  color: #1b0088;
+}
+
+.totem[data-tema='aeropuerto'] .step-label {
+  color: #1b0088;
+  text-shadow: none;
+}
+
+.totem[data-tema='aeropuerto'] .step-dot {
+  background: rgba(27, 0, 136, 0.1);
+  border-color: rgba(27, 0, 136, 0.35);
+  color: #1b0088;
 }
 
 .totem[data-tema='aeropuerto'] .step.active .step-dot {
-  color: #1e3a5f;
+  background: #1b0088;
+  color: #fff;
+  border-color: #1b0088;
+}
+
+.totem[data-tema='aeropuerto'] .step.done .step-dot {
+  color: var(--exito);
 }
 
 .totem[data-tema='aeropuerto'] .avatar-stage {
   background: linear-gradient(
     180deg,
-    #0f172a 0%,
-    #1e3a5f 38%,
-    #334155 68%,
-    #f8fafc 100%
+    #ffffff 0%,
+    #fafbff 28%,
+    #eef2ff 58%,
+    #fef9f3 85%,
+    #ffffff 100%
   );
 }
 
 .totem[data-tema='aeropuerto'] .avatar-glow {
-  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.14), transparent 65%);
+  background: radial-gradient(ellipse at center, rgba(27, 0, 136, 0.06), transparent 65%);
 }
 
 .totem[data-tema='aeropuerto'] .theme-pill.active {
-  color: #1e3a5f;
+  color: #1b0088;
+}
+
+.totem[data-tema='aeropuerto'] .btn-primary {
+  background: linear-gradient(135deg, #1b0088, #2d1b9e);
+}
+
+.totem[data-tema='aeropuerto'] .btn-primary:active {
+  background: #140066;
 }
 
 .totem[data-tema='clinica'] .theme-pill.active {
@@ -970,6 +1008,126 @@ button {
   line-height: 1;
 }
 
+/* ---- Mapa mundial ---- */
+.world-map-wrap {
+  width: 100%;
+  border-radius: var(--radio);
+  overflow: hidden;
+  border: 2px solid var(--celeste-borde);
+  background: #fff;
+}
+
+.world-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+}
+
+.world-map-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--celeste-suave);
+  border-top: 1px solid var(--celeste-borde);
+}
+
+.world-map-flag {
+  font-size: 22px;
+}
+
+/* ---- Países y regiones ---- */
+.paises-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.card-btn-pais {
+  align-items: center;
+  text-align: center;
+  padding: 14px 10px;
+  min-height: 100px;
+}
+
+.card-btn-pais .dest-flag {
+  font-size: 32px;
+}
+
+.card-btn-pais .card-btn-title {
+  font-size: 15px;
+}
+
+.card-btn-pais .card-btn-sub {
+  font-size: 12px;
+}
+
+.regiones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.destino-row {
+  padding: 16px;
+}
+
+.destino-row .row-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 18px;
+}
+
+.chip-capital {
+  font-size: 10px;
+  padding: 2px 8px;
+  background: var(--celeste-suave);
+  color: var(--celeste-oscuro);
+}
+
+.route-banner-light {
+  background: #fff;
+  border: 2px solid var(--celeste-borde);
+  color: var(--ink);
+  padding: 12px;
+  gap: 8px;
+}
+
+.route-banner-light .world-map-wrap {
+  border: none;
+  margin: -4px -4px 4px;
+}
+
+.route-codes {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--celeste-oscuro);
+}
+
+.route-banner-light .route-sub {
+  opacity: 1;
+  color: var(--gris);
+  font-size: 13px;
+}
+
+.boarding-logo {
+  height: 22px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
 .destinos-grid .card-btn.selected {
   border-color: var(--celeste);
   background: var(--celeste-suave);
@@ -982,7 +1140,7 @@ button {
   gap: 2px;
   padding: 14px 18px;
   border-radius: var(--radio);
-  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  background: linear-gradient(135deg, #1b0088, #2d1b9e);
   color: #fff;
   font-size: 22px;
   font-weight: 800;
@@ -1092,8 +1250,8 @@ button {
 }
 
 .chip-flight {
-  background: #0f172a;
-  color: #f59e0b;
+  background: #1b0088;
+  color: #fff;
 }
 
 .flight-route {
@@ -1173,10 +1331,10 @@ button {
   width: 100%;
   border-radius: var(--radio);
   overflow: hidden;
-  background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 55%, #334155 100%);
+  background: linear-gradient(160deg, #1b0088 0%, #2d1b9e 55%, #140066 100%);
   color: #fff;
   text-align: left;
-  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.3);
+  box-shadow: 0 8px 32px rgba(27, 0, 136, 0.25);
   animation: fadeUp 0.4s ease-out;
 }
 
@@ -1193,7 +1351,7 @@ button {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #f59e0b;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .boarding-pnr {
@@ -1249,6 +1407,6 @@ button {
   font-size: 14px;
   font-weight: 700;
   text-align: center;
-  background: rgba(245, 158, 11, 0.15);
-  color: #fde68a;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }

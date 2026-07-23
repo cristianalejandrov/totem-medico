@@ -1,15 +1,8 @@
 /** Catálogo y reservas de vuelos simuladas (localStorage). */
 
-const KEY = 'totem-vuelos-v1'
+import { getDestinoById } from './destinos'
 
-export const DESTINOS = [
-  { id: 'miami', pais: 'Estados Unidos', ciudad: 'Miami', codigo: 'MIA', bandera: '🇺🇸' },
-  { id: 'madrid', pais: 'España', ciudad: 'Madrid', codigo: 'MAD', bandera: '🇪🇸' },
-  { id: 'lima', pais: 'Perú', ciudad: 'Lima', codigo: 'LIM', bandera: '🇵🇪' },
-  { id: 'bogota', pais: 'Colombia', ciudad: 'Bogotá', codigo: 'BOG', bandera: '🇨🇴' },
-  { id: 'sydney', pais: 'Australia', ciudad: 'Sídney', codigo: 'SYD', bandera: '🇦🇺' },
-  { id: 'cancun', pais: 'México', ciudad: 'Cancún', codigo: 'CUN', bandera: '🇲🇽' },
-]
+const KEY = 'totem-vuelos-v1'
 
 const HORARIOS = ['06:40', '09:15', '12:30', '15:45', '18:20', '21:10']
 
@@ -22,21 +15,23 @@ function readAll() {
 }
 
 function genPnr() {
-  return 'INC' + Math.random().toString(36).slice(2, 7).toUpperCase()
+  return 'LA' + Math.random().toString(36).slice(2, 7).toUpperCase()
 }
 
 function genVueloNum(destino, idx) {
-  return `AI${100 + idx}${destino.codigo.slice(0, 1)}`
+  return `LA${800 + idx}${destino.codigo.slice(0, 1)}`
 }
 
 /** Genera opciones de vuelo para una fecha y destino. */
 export function buscarVuelos({ destinoId, fechaIda, fechaVuelta, idaYVuelta }) {
-  const destino = DESTINOS.find((d) => d.id === destinoId)
+  const destino = getDestinoById(destinoId)
   if (!destino) return []
 
   const ida = new Date(fechaIda)
+  const distFactor = Math.abs(destino.mapX - 28) + Math.abs(destino.mapY - 72)
+
   return HORARIOS.slice(0, 4).map((hora, i) => {
-    const base = 89000 + i * 12000 + destinoId.length * 3000
+    const base = 69000 + i * 11000 + distFactor * 800
     const precio = idaYVuelta ? base * 1.75 : base
     return {
       id: `${destinoId}-${fechaIda}-${hora}`,
@@ -84,7 +79,7 @@ export function reservarVuelo(rutClean, vuelo, pasajeros = 1) {
   return reserva
 }
 
-/** Próximos 14 días hábiles para selector táctil. */
+/** Próximos días hábiles para selector táctil. */
 export function proximosDias(cantidad = 14) {
   const dias = []
   const cursor = new Date()
