@@ -18,7 +18,21 @@ import {
 import { cleanRut, formatRut, validateRut } from '../../utils/rut'
 import { tts } from '../../voice/tts'
 
-const PASOS = ['sucursal', 'servicio', 'subServicio', 'profesional', 'calendario', 'horario', 'datos', 'confirmacion']
+const PASOS = [
+  'sucursal',
+  'servicio',
+  'subServicio',
+  'profesional',
+  'calendario',
+  'horario',
+  'datosNombre',
+  'datosRut',
+  'datosCorreo',
+  'datosTelefono',
+  'confirmacion',
+]
+
+const ONBOARD_STEPS = ['datosNombre', 'datosRut', 'datosCorreo', 'datosTelefono']
 
 const QH_ICONS = {
   masaje: (
@@ -128,6 +142,21 @@ function QhIcon({ name, className = 'esp-icon qh-icon' }) {
   )
 }
 
+function OnboardingProgress({ pasoActual }) {
+  const idx = ONBOARD_STEPS.indexOf(pasoActual)
+  if (idx < 0) return null
+  return (
+    <div className="qh-onboard-progress" aria-label={`Paso ${idx + 1} de ${ONBOARD_STEPS.length}`}>
+      {ONBOARD_STEPS.map((_, i) => (
+        <span key={i} className={`qh-onboard-dot ${i <= idx ? 'active' : ''}`} />
+      ))}
+      <span className="qh-onboard-label">
+        {idx + 1} de {ONBOARD_STEPS.length}
+      </span>
+    </div>
+  )
+}
+
 export default function QuirohomeFlow({ onFinish, onStepChange }) {
   const [paso, setPaso] = useState('sucursal')
   const [sel, setSel] = useState({})
@@ -174,13 +203,8 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
     paso === 'sucursal' ? '← Salir' : '← Volver'
 
   const reservar = () => {
-    if (!validateRut(form.rut)) {
-      setRutError(true)
-      tts.speak('El RUT ingresado no es válido.')
-      return
-    }
-    if (!form.nombre.trim() || !form.correo.trim() || !form.telefono.trim()) {
-      tts.speak('Completa todos tus datos para reservar.')
+    if (!form.telefono.trim() || form.telefono.trim().length < 8) {
+      tts.speak('Ingresa un número de teléfono válido.')
       return
     }
     const r = guardarReserva({
@@ -193,6 +217,33 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
     setReserva(r)
     setPaso('confirmacion')
     tts.speak(`Reserva confirmada. Tu código es ${r.codigo}. Te esperamos en Quirohome.`)
+  }
+
+  const avanzarNombre = () => {
+    if (!form.nombre.trim() || form.nombre.trim().length < 3) {
+      tts.speak('Ingresa tu nombre completo.')
+      return
+    }
+    ir('datosRut', 'Ahora ingresa tu RUT.')
+  }
+
+  const avanzarRut = () => {
+    if (!validateRut(form.rut)) {
+      setRutError(true)
+      tts.speak('El RUT ingresado no es válido.')
+      return
+    }
+    setRutError(false)
+    ir('datosCorreo', 'Ingresa tu correo electrónico.')
+  }
+
+  const avanzarCorreo = () => {
+    const correo = form.correo.trim()
+    if (!correo || !correo.includes('@') || !correo.includes('.')) {
+      tts.speak('Ingresa un correo válido.')
+      return
+    }
+    ir('datosTelefono', 'Ingresa tu número de teléfono.')
   }
 
   return (
@@ -364,7 +415,7 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
                 className="slot"
                 onClick={() => {
                   setSel((s) => ({ ...s, hora: h }))
-                  ir('datos', 'Ingresa tus datos de contacto para confirmar la reserva.')
+                  ir('datosNombre', 'Ingresa tu nombre completo.')
                 }}
               >
                 {h}
@@ -374,70 +425,82 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
         </>
       )}
 
-      {paso === 'datos' && (
-        <>
-          <h1 className="title title-sm">Tus datos</h1>
-          <p className="subtitle">Paciente · {sel.servicio?.nombre}</p>
+      {paso === 'datosNombre' && (
+        <div className="qh-onboarding">
+          <OnboardingProgress pasoActual={paso} />
+          <h1 className="qh-onboard-title">Nombre completo</h1>
+          <p className="subtitle">¿Cómo te llamas?</p>
+          <input
+            type="text"
+            className="qh-input qh-input-onboard"
+            value={form.nombre}
+            placeholder="Ej. María González"
+            autoComplete="name"
+            onChange={(e) => setForm((f) => ({ ...f, nombre: e.target.value }))}
+          />
+          <button type="button" className="btn-primary qh-onboard-btn" onClick={avanzarNombre}>
+            Siguiente
+          </button>
+        </div>
+      )}
 
-          <label className="qh-field">
-            <span className="field-label">Nombre completo</span>
-            <input
-              type="text"
-              className="qh-input"
-              value={form.nombre}
-              placeholder="Ej. María González"
-              onChange={(e) => setForm((f) => ({ ...f, nombre: e.target.value }))}
-            />
-          </label>
+      {paso === 'datosRut' && (
+        <div className="qh-onboarding qh-onboarding-rut">
+          <OnboardingProgress pasoActual={paso} />
+          <h1 className="qh-onboard-title">RUT</h1>
+          <p className="subtitle">Identificación del paciente</p>
+          <div className={`rut-display qh-rut-onboard ${rutError ? 'rut-error shake' : ''} ${form.rut ? '' : 'rut-empty'}`}>
+            {form.rut ? formatRut(form.rut) : '12.345.678-9'}
+          </div>
+          <Keypad
+            onKey={(k) => {
+              setRutError(false)
+              setForm((f) => ({ ...f, rut: cleanRut(f.rut + k) }))
+            }}
+            onDelete={() => setForm((f) => ({ ...f, rut: f.rut.slice(0, -1) }))}
+            onClear={() => setForm((f) => ({ ...f, rut: '' }))}
+          />
+          <button type="button" className="btn-primary qh-onboard-btn" onClick={avanzarRut}>
+            Siguiente
+          </button>
+        </div>
+      )}
 
-          <label className="qh-field">
-            <span className="field-label">RUT</span>
-            <div className={`rut-display qh-rut ${rutError ? 'rut-error shake' : ''} ${form.rut ? '' : 'rut-empty'}`}>
-              {form.rut ? formatRut(form.rut) : '12.345.678-9'}
-            </div>
-            <Keypad
-              onKey={(k) => {
-                setRutError(false)
-                setForm((f) => ({ ...f, rut: cleanRut(f.rut + k) }))
-              }}
-              onDelete={() => setForm((f) => ({ ...f, rut: f.rut.slice(0, -1) }))}
-              onClear={() => setForm((f) => ({ ...f, rut: '' }))}
-            />
-          </label>
+      {paso === 'datosCorreo' && (
+        <div className="qh-onboarding">
+          <OnboardingProgress pasoActual={paso} />
+          <h1 className="qh-onboard-title">Correo</h1>
+          <p className="subtitle">Te enviaremos la confirmación</p>
+          <input
+            type="email"
+            className="qh-input qh-input-onboard"
+            value={form.correo}
+            placeholder="correo@ejemplo.cl"
+            autoComplete="email"
+            onChange={(e) => setForm((f) => ({ ...f, correo: e.target.value }))}
+          />
+          <button type="button" className="btn-primary qh-onboard-btn" onClick={avanzarCorreo}>
+            Siguiente
+          </button>
+        </div>
+      )}
 
-          <label className="qh-field">
-            <span className="field-label">Correo</span>
-            <input
-              type="email"
-              className="qh-input"
-              value={form.correo}
-              placeholder="correo@ejemplo.cl"
-              onChange={(e) => setForm((f) => ({ ...f, correo: e.target.value }))}
-            />
-          </label>
-
-          <label className="qh-field">
-            <span className="field-label">Teléfono</span>
-            <input
-              type="tel"
-              className="qh-input"
-              value={form.telefono}
-              placeholder="+56 9 1234 5678"
-              onChange={(e) => setForm((f) => ({ ...f, telefono: e.target.value }))}
-            />
-          </label>
-
-          <div className="summary-card">
+      {paso === 'datosTelefono' && (
+        <div className="qh-onboarding">
+          <OnboardingProgress pasoActual={paso} />
+          <h1 className="qh-onboard-title">Teléfono</h1>
+          <p className="subtitle">Para contactarte si es necesario</p>
+          <input
+            type="tel"
+            className="qh-input qh-input-onboard"
+            value={form.telefono}
+            placeholder="+56 9 1234 5678"
+            autoComplete="tel"
+            onChange={(e) => setForm((f) => ({ ...f, telefono: e.target.value }))}
+          />
+          <div className="summary-card qh-onboard-summary">
             <div className="summary-row">
-              <span>Servicio</span>
-              <strong>{sel.servicio?.nombre}</strong>
-            </div>
-            <div className="summary-row">
-              <span>Profesional</span>
-              <strong>{sel.profesional?.nombre}</strong>
-            </div>
-            <div className="summary-row">
-              <span>Fecha</span>
+              <span>Cita</span>
               <strong>{formatFechaCorta(fechaSel)} · {sel.hora}</strong>
             </div>
             <div className="summary-row total">
@@ -445,11 +508,10 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
               <strong>{formatCLP(sel.servicio?.precio)}</strong>
             </div>
           </div>
-
-          <button type="button" className="btn-primary" onClick={reservar}>
+          <button type="button" className="btn-primary qh-onboard-btn" onClick={reservar}>
             Reservar cita
           </button>
-        </>
+        </div>
       )}
 
       {paso === 'confirmacion' && reserva && (

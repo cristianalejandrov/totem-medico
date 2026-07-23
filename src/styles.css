@@ -1696,9 +1696,9 @@ button {
 }
 
 .brand-logo-quirohome {
-  height: 56px;
+  height: 76px;
   width: auto;
-  max-width: 180px;
+  max-width: 220px;
   object-fit: contain;
 }
 
@@ -1951,4 +1951,75 @@ button {
 
 .screen-quirohome .keypad {
   margin-bottom: 4px;
+}
+
+/* ---- Quirohome onboarding ---- */
+.qh-onboarding {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 4px;
+  min-height: 100%;
+}
+
+.qh-onboard-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.qh-onboard-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--celeste-borde);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.qh-onboard-dot.active {
+  background: var(--celeste);
+  transform: scale(1.15);
+}
+
+.qh-onboard-label {
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--celeste-oscuro);
+}
+
+.qh-onboard-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.qh-input-onboard {
+  min-height: 80px;
+  padding: 24px 22px;
+  font-size: 30px;
+  font-weight: 700;
+  border-width: 3px;
+  border-radius: 20px;
+}
+
+.qh-onboard-btn {
+  margin-top: auto;
+  min-height: 80px;
+  font-size: 24px;
+  border-radius: 20px;
+}
+
+.qh-onboarding-rut .qh-rut-onboard {
+  font-size: 48px;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.qh-onboard-summary {
+  margin-top: 4px;
 }

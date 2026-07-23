@@ -170,6 +170,9 @@ export const PASO_QUIROHOME = {
   profesional: 2,
   calendario: 3,
   horario: 3,
-  datos: 4,
+  datosNombre: 4,
+  datosRut: 4,
+  datosCorreo: 4,
+  datosTelefono: 4,
   confirmacion: 4,
 }
