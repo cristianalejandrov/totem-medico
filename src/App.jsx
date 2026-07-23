@@ -63,7 +63,6 @@ export default function App() {
   const [quirohomeKey, setQuirohomeKey] = useState(0)
   const [showSplash, setShowSplash] = useState(true)
   const [splashPhase, setSplashPhase] = useState('in')
-  const [sessionReady, setSessionReady] = useState(false)
   const [avatarReady, setAvatarReady] = useState(false)
   const splashTimer = useRef(null)
 
@@ -79,8 +78,8 @@ export default function App() {
     clearTimeout(splashTimer.current)
     setShowSplash(true)
     setSplashPhase('in')
-    setSessionReady(false)
     setAvatarReady(false)
+    tts.cancel()
   }, [temaId])
 
   const handleAvatarReady = useCallback(() => {
@@ -93,7 +92,6 @@ export default function App() {
       setSplashPhase('out')
       splashTimer.current = setTimeout(() => {
         setShowSplash(false)
-        setSessionReady(true)
       }, SPLASH_FADE_MS)
     }, SPLASH_MIN_MS)
     return () => clearTimeout(splashTimer.current)
@@ -117,7 +115,11 @@ export default function App() {
 
   const cambiarTema = (nuevo) => {
     if (nuevo === temaId) return
+    clearTimeout(splashTimer.current)
     tts.cancel()
+    setShowSplash(true)
+    setSplashPhase('in')
+    setAvatarReady(false)
     setTemaId(nuevo)
     setRut('')
     setSeleccion({})
@@ -217,10 +219,9 @@ export default function App() {
       />
 
       <main className="totem-panel">
-        {screen === 'rut' && (
+        {!showSplash && screen === 'rut' && (
           <RutScreen
             tema={temaId}
-            sessionReady={sessionReady}
             onValid={(r) => {
               setRut(r)
               setScreen('menu')
@@ -326,10 +327,9 @@ export default function App() {
           <VueloConfirmacionScreen reserva={vueloFinal} onFinish={reset} />
         )}
 
-        {temaId === 'quirohome' && screen === 'quirohome' && (
+        {!showSplash && temaId === 'quirohome' && screen === 'quirohome' && (
           <QuirohomeFlow
             key={quirohomeKey}
-            sessionReady={sessionReady}
             onStepChange={setQuirohomePaso}
             onFinish={() => {
               setQuirohomeKey((k) => k + 1)

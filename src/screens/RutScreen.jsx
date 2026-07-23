@@ -26,17 +26,19 @@ const COPY = {
   },
 };
 
-export default function RutScreen({ tema = 'clinica', sessionReady = true, onValid }) {
+export default function RutScreen({ tema = 'clinica', onValid }) {
   const c = COPY[tema] || COPY.clinica;
   const [rut, setRut] = useState('');
   const [error, setError] = useState(false);
   const helpTimer = useRef(null);
 
   useEffect(() => {
-    if (!sessionReady) return;
     tts.speak(c.bienvenida);
-    return () => clearTimeout(helpTimer.current);
-  }, [tema, sessionReady, c.bienvenida]);
+    return () => {
+      clearTimeout(helpTimer.current);
+      tts.cancel();
+    };
+  }, [tema, c.bienvenida]);
 
   const pressKey = (k) => {
     setError(false);

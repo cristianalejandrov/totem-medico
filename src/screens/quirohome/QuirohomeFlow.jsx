@@ -157,7 +157,7 @@ function OnboardingProgress({ pasoActual }) {
   )
 }
 
-export default function QuirohomeFlow({ onFinish, onStepChange, sessionReady = true }) {
+export default function QuirohomeFlow({ onFinish, onStepChange }) {
   const [paso, setPaso] = useState('sucursal')
   const [sel, setSel] = useState({})
   const [fechaSel, setFechaSel] = useState(null)
@@ -166,9 +166,9 @@ export default function QuirohomeFlow({ onFinish, onStepChange, sessionReady = t
   const [rutError, setRutError] = useState(false)
 
   useEffect(() => {
-    if (!sessionReady) return
     tts.speak('Bienvenido a Quirohome. Selecciona la sucursal donde deseas atenderte.')
-  }, [sessionReady])
+    return () => tts.cancel()
+  }, [])
 
   useEffect(() => {
     onStepChange?.(PASO_QUIROHOME[paso] ?? 0)
