@@ -216,7 +216,7 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
     })
     setReserva(r)
     setPaso('confirmacion')
-    tts.speak(`Reserva confirmada. Tu código es ${r.codigo}. Te esperamos en Quirohome.`)
+    tts.speak(`Reserva confirmada. Tu código es ${r.codigo}. Sácale un pantallazo para que no lo pierdas. Te esperamos en Quirohome.`)
   }
 
   const avanzarNombre = () => {
@@ -523,6 +523,7 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
           </div>
           <h1 className="title title-sm">¡Cita reservada!</h1>
           <p className="codigo">{reserva.codigo}</p>
+          <p className="qh-codigo-hint">Sacale un pantallazo a este código para que no lo pierdas.</p>
           <div className="summary-card">
             <div className="summary-row">
               <span>Sucursal</span>

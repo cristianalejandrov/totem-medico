@@ -1852,9 +1852,9 @@ button {
 .qh-cal-header {
   background: linear-gradient(135deg, var(--celeste), var(--celeste-oscuro));
   color: #fff;
-  padding: 16px;
+  padding: 12px;
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
@@ -1867,9 +1867,9 @@ button {
 }
 
 .qh-cal-weekdays span {
-  padding: 12px 4px;
+  padding: 9px 4px;
   text-align: center;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 800;
   color: var(--celeste-oscuro);
   text-transform: uppercase;
@@ -1882,18 +1882,18 @@ button {
 }
 
 .qh-cal-empty {
-  min-height: 56px;
+  min-height: 48px;
   background: #f8faf9;
   border: 1px solid #eef2f0;
 }
 
 .qh-cal-day {
-  min-height: 56px;
+  min-height: 48px;
   display: grid;
   place-items: center;
   border: 1px solid #eef2f0;
   background: #fff;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--ink);
   transition: background 0.15s, border-color 0.15s, color 0.15s;
@@ -2025,6 +2025,16 @@ button {
   margin-top: 4px;
 }
 
+.qh-codigo-hint {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--celeste-oscuro);
+  text-align: center;
+  max-width: 280px;
+  margin: -4px 0 8px;
+}
+
 /* ====== Celular responsivo (tótem vertical ≥641px sin cambios) ====== */
 @media (max-width: 640px) {
   body {
@@ -2092,10 +2102,7 @@ button {
   }
 
   .avatar-caption {
-    font-size: 12px;
-    padding: 8px 12px;
-    max-width: 92%;
-    bottom: 8px;
+    display: none !important;
   }
 
   .totem-panel {
@@ -2113,20 +2120,20 @@ button {
   }
 
   .title {
-    font-size: 22px;
-    margin-top: 6px;
+    font-size: 17px;
+    margin-top: 4px;
   }
 
   .title-sm {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .subtitle {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .subtitle strong {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .field-label {
@@ -2134,10 +2141,10 @@ button {
   }
 
   .rut-display {
-    font-size: 22px;
-    padding: 12px 8px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    font-size: 21px;
+    padding: 10px 8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
   }
 
   .error-text {
@@ -2145,10 +2152,10 @@ button {
   }
 
   .key {
-    min-height: 48px;
-    padding: 10px 6px;
-    font-size: 20px;
-    border-radius: 14px;
+    min-height: 42px;
+    padding: 8px 6px;
+    font-size: 19px;
+    border-radius: 12px;
   }
 
   .keypad {
@@ -2167,7 +2174,7 @@ button {
   }
 
   .row-title {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .row-sub {
@@ -2189,23 +2196,23 @@ button {
   }
 
   .card-btn-title {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .card-btn-sub {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .card-btn-big {
-    padding: 16px 14px;
+    padding: 14px 12px;
   }
 
   .card-btn-big .card-btn-title {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .card-btn-big .card-btn-sub {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .card-btn-esp {
@@ -2225,7 +2232,7 @@ button {
   }
 
   .card-btn-esp .card-btn-title {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .chip {
@@ -2259,8 +2266,8 @@ button {
   }
 
   .slot {
-    height: 44px;
-    font-size: 13px;
+    height: 40px;
+    font-size: 12px;
   }
 
   .summary-row {
@@ -2276,7 +2283,14 @@ button {
   }
 
   .codigo {
-    font-size: 22px;
+    font-size: 20px;
+    padding: 10px 18px;
+  }
+
+  .qh-codigo-hint {
+    font-size: 11px;
+    max-width: 240px;
+    margin: -2px 0 6px;
   }
 
   .resumen-line {
@@ -2371,11 +2385,11 @@ button {
   }
 
   .qh-tipo-card .card-btn-title {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .qh-tipo-card .card-btn-sub {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .qh-icon-lg {
@@ -2395,58 +2409,82 @@ button {
   }
 
   .qh-servicio-row .row-title {
-    font-size: 13px;
-  }
-
-  .qh-servicio-row .row-sub {
-    font-size: 11px;
-  }
-
-  .qh-precio {
-    font-size: 15px;
-  }
-
-  .qh-cal-header {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .qh-cal-weekdays span {
-    font-size: 9px;
-    padding: 6px 2px;
-  }
-
-  .qh-cal-day {
-    min-height: 34px;
     font-size: 12px;
   }
 
+  .qh-servicio-row .row-sub {
+    font-size: 10px;
+  }
+
+  .qh-precio {
+    font-size: 13px;
+  }
+
+  .qh-cal-header {
+    font-size: 12px;
+    padding: 7px;
+  }
+
+  .qh-cal-weekdays span {
+    font-size: 7px;
+    padding: 4px 2px;
+  }
+
+  .qh-cal-day {
+    min-height: 28px;
+    font-size: 10px;
+  }
+
   .qh-cal-empty {
-    min-height: 34px;
+    min-height: 28px;
+  }
+
+  .qh-calendarios {
+    gap: 14px;
+    margin-top: 12px;
+  }
+
+  .qh-onboarding {
+    min-height: auto;
+    gap: 10px;
+  }
+
+  .qh-onboarding-rut {
+    gap: 6px;
   }
 
   .qh-onboard-title {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .qh-onboard-label {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .qh-input,
   .qh-input-onboard {
-    min-height: 52px;
-    padding: 14px 14px;
-    font-size: 16px;
+    min-height: 46px;
+    padding: 12px 12px;
+    font-size: 15px;
   }
 
   .qh-onboarding-rut .qh-rut-onboard {
-    font-size: 24px;
+    font-size: 21px;
+    margin-bottom: 4px;
   }
 
   .qh-onboard-btn {
-    min-height: 48px;
-    font-size: 14px;
+    margin-top: 10px;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .qh-onboarding-rut .qh-onboard-btn {
+    margin-top: 8px;
+  }
+
+  .screen-quirohome .qh-onboarding-rut .keypad {
+    gap: 5px;
   }
 
   .summary-card {
@@ -2498,16 +2536,20 @@ button {
   }
 
   .title {
-    font-size: 18px;
+    font-size: 17px;
     margin-top: 2px;
   }
 
   .title-sm {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .subtitle {
     font-size: 11px;
+  }
+
+  .avatar-caption {
+    display: none !important;
   }
 
   .screen {
