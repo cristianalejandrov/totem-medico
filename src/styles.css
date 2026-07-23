@@ -1429,6 +1429,62 @@ button {
   font-size: 13px;
 }
 
+/* ---- Fechas vuelo (compacto) ---- */
+.aero-fechas-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aero-fechas-compact .route-banner-fechas .route-banner-text {
+  padding: 8px 12px 10px;
+}
+
+.aero-fechas-compact .route-banner-fechas .route-codes {
+  font-size: 17px;
+}
+
+.aero-fechas-compact .route-banner-fechas .route-sub {
+  font-size: 11px;
+}
+
+.aero-trip-type {
+  gap: 4px;
+  padding: 3px;
+  border-radius: 12px;
+}
+
+.aero-trip-type .segment {
+  min-height: 40px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.aero-fecha-label {
+  font-size: 11px;
+  margin-top: 0;
+  margin-bottom: -4px;
+  letter-spacing: 0.03em;
+}
+
+.aero-fechas-compact .chip-row {
+  gap: 6px;
+  padding-bottom: 0;
+}
+
+.aero-fechas-compact .chip-btn {
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.aero-fechas-compact .aero-buscar-btn {
+  margin-top: 4px;
+  min-height: 52px;
+  font-size: 16px;
+}
+
 .route-banner-light {
   background: #fff;
   border: 2px solid var(--celeste-borde);
@@ -2305,6 +2361,31 @@ button {
   .segment {
     min-height: 44px;
     font-size: 13px;
+  }
+
+  .aero-trip-type .segment {
+    min-height: 34px;
+    padding: 5px 4px;
+    font-size: 10px;
+  }
+
+  .aero-fecha-label {
+    font-size: 9px;
+    margin-bottom: -6px;
+  }
+
+  .aero-fechas-compact {
+    gap: 5px;
+  }
+
+  .aero-fechas-compact .chip-btn {
+    padding: 6px 9px;
+    font-size: 10px;
+  }
+
+  .aero-fechas-compact .aero-buscar-btn {
+    min-height: 42px;
+    font-size: 12px;
   }
 
   .day-tab {

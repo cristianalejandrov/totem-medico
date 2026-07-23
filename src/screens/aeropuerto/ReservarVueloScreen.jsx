@@ -209,7 +209,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack, onMapMod
       )}
 
       {paso === 1 && (
-        <>
+        <div className="aero-fechas-compact">
           {destino && (
             <div className="route-banner route-banner-fechas">
               <FlightMap pais={pais} destino={destino} compact />
@@ -223,7 +223,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack, onMapMod
             </div>
           )}
 
-          <div className="segmented">
+          <div className="segmented aero-trip-type">
             <button
               type="button"
               className={`segment ${!idaYVuelta ? 'active' : ''}`}
@@ -243,7 +243,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack, onMapMod
             </button>
           </div>
 
-          <p className="field-label">Fecha de ida</p>
+          <p className="field-label aero-fecha-label">Fecha de ida</p>
           <div className="chip-row scroll-x">
             {dias.map((d) => (
               <button
@@ -259,7 +259,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack, onMapMod
 
           {idaYVuelta && (
             <>
-              <p className="field-label">Fecha de vuelta</p>
+              <p className="field-label aero-fecha-label">Fecha de vuelta</p>
               <div className="chip-row scroll-x">
                 {dias
                   .filter((d) => !fechaIda || d > fechaIda)
@@ -279,13 +279,13 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack, onMapMod
 
           <button
             type="button"
-            className="btn-primary"
+            className="btn-primary aero-buscar-btn"
             disabled={!fechaIda || (idaYVuelta && !fechaVuelta)}
             onClick={() => irPaso(2, `Estos son los vuelos disponibles a ${destino?.ciudad}.`)}
           >
             Buscar vuelos
           </button>
-        </>
+        </div>
       )}
 
       {paso === 2 && (
