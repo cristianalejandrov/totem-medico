@@ -49,6 +49,7 @@ export default function App() {
   const [reservaFinal, setReservaFinal] = useState(null)
   const [vueloFinal, setVueloFinal] = useState(null)
   const [caption, setCaption] = useState(null)
+  const [avatarMapMode, setAvatarMapMode] = useState(false)
 
   useEffect(() => {
     tts.onCaption = setCaption
@@ -64,7 +65,12 @@ export default function App() {
     setSeleccion({})
     setReservaFinal(null)
     setVueloFinal(null)
+    setAvatarMapMode(false)
     setScreen('rut')
+  }, [])
+
+  const handleMapModeChange = useCallback((activo) => {
+    setAvatarMapMode(activo)
   }, [])
 
   const cambiarTema = (nuevo) => {
@@ -75,6 +81,7 @@ export default function App() {
     setSeleccion({})
     setReservaFinal(null)
     setVueloFinal(null)
+    setAvatarMapMode(false)
     setScreen('rut')
   }
 
@@ -114,7 +121,7 @@ export default function App() {
       : PASO_AEROPUERTO[screen] ?? 0
 
   return (
-    <div className="totem" data-tema={temaId}>
+    <div className={`totem ${avatarMapMode ? 'avatar-mapa-mode' : ''}`} data-tema={temaId}>
       <header className="totem-header">
         <div className="brand">
           {temaId === 'aeropuerto' ? (
@@ -143,7 +150,12 @@ export default function App() {
         <Stepper paso={paso} pasos={tema.pasos} />
       </header>
 
-      <AvatarStage caption={caption} modelUrl={tema.avatarModel} key={tema.avatarModel} />
+      <AvatarStage
+        caption={caption}
+        modelUrl={tema.avatarModel}
+        key={tema.avatarModel}
+        compact={avatarMapMode}
+      />
 
       <main className="totem-panel">
         {screen === 'rut' && (
@@ -237,11 +249,16 @@ export default function App() {
         {temaId === 'aeropuerto' && screen === 'reservar' && (
           <ReservarVueloScreen
             rut={rut}
+            onMapModeChange={handleMapModeChange}
             onReservado={(v) => {
               setVueloFinal(v)
+              setAvatarMapMode(false)
               setScreen('confirmacion')
             }}
-            onBack={() => setScreen('menu')}
+            onBack={() => {
+              setAvatarMapMode(false)
+              setScreen('menu')
+            }}
           />
         )}
 

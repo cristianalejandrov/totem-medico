@@ -110,6 +110,13 @@ export default function FlightMap({ pais, destino, compact = false }) {
     setTimeout(() => map.invalidateSize(), 50)
   }, [pais, destino, compact])
 
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+    const t = setTimeout(() => map.invalidateSize(), 520)
+    return () => clearTimeout(t)
+  }, [compact])
+
   return (
     <div className={`flight-map-wrap ${compact ? 'flight-map-compact' : ''}`}>
       <div ref={hostRef} className="flight-map" />

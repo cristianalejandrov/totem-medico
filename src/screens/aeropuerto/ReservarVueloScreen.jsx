@@ -11,7 +11,7 @@ import {
 } from '../../data/vuelos'
 import { tts } from '../../voice/tts'
 
-export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
+export default function ReservarVueloScreen({ rut, onReservado, onBack, onMapModeChange }) {
   const dias = useMemo(() => proximosDias(12), [])
   const [paso, setPaso] = useState(0)
   const [subDestino, setSubDestino] = useState('pais')
@@ -31,6 +31,11 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
   useEffect(() => {
     tts.speak('Elige el país de destino. Si viajas dentro de Chile, podrás elegir la región.')
   }, [])
+
+  useEffect(() => {
+    onMapModeChange?.(paso < 2)
+    return () => onMapModeChange?.(false)
+  }, [paso, onMapModeChange])
 
   const vuelos = useMemo(() => {
     if (!destinoId || !fechaIda) return []
@@ -122,7 +127,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
         </p>
       )}
 
-      {!eligiendoPaises && !eligiendoCiudad && subtitulo && (
+      {!eligiendoPaises && !eligiendoCiudad && paso < 2 && subtitulo && (
         <p className="subtitle">{subtitulo}</p>
       )}
 

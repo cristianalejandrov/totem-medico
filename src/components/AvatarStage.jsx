@@ -3,9 +3,21 @@ import { tts } from '../voice/tts'
 
 const EXPRESIONES_FELICES = ['f04', 'f01', 'f00', 'f06']
 
-export default function AvatarStage({ caption, modelUrl = '/models/haru/haru_greeter_t03.model3.json' }) {
+export default function AvatarStage({
+  caption,
+  modelUrl = '/models/haru/haru_greeter_t03.model3.json',
+  compact = false,
+}) {
   const hostRef = useRef(null)
   const [status, setStatus] = useState('cargando')
+  const compactRef = useRef(compact)
+  const fitRef = useRef(null)
+
+  compactRef.current = compact
+
+  useEffect(() => {
+    fitRef.current?.()
+  }, [compact])
 
   useEffect(() => {
     const host = hostRef.current
@@ -104,11 +116,13 @@ export default function AvatarStage({ caption, modelUrl = '/models/haru/haru_gre
           const w = app.renderer.width / app.renderer.resolution
           const h = app.renderer.height / app.renderer.resolution
           const ow = model.internalModel.originalWidth || model.width
-          const scale = (w / ow) * 1.55
+          const isCompact = compactRef.current
+          const scale = (w / ow) * (isCompact ? 0.95 : 1.55)
           model.scale.set(scale)
           model.anchor.set(0.5, 0.04)
-          model.position.set(w / 2, -h * 0.02)
+          model.position.set(w / 2, isCompact ? h * 0.08 : -h * 0.02)
         }
+        fitRef.current = fit
         fit()
 
         resizeObs = new ResizeObserver(() => {
@@ -131,6 +145,7 @@ export default function AvatarStage({ caption, modelUrl = '/models/haru/haru_gre
     })()
 
     return () => {
+      fitRef.current = null
       disposed = true
       try {
         resizeObs?.disconnect()
@@ -147,7 +162,7 @@ export default function AvatarStage({ caption, modelUrl = '/models/haru/haru_gre
   }, [modelUrl])
 
   return (
-    <div className="avatar-stage" ref={hostRef}>
+    <div className={`avatar-stage ${compact ? 'avatar-stage--compact' : ''}`} ref={hostRef}>
       <div className="avatar-glow" aria-hidden="true" />
       {status === 'cargando' && (
         <div className="avatar-loading">
