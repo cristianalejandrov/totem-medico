@@ -2047,31 +2047,31 @@ button {
   }
 
   .brand-name {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .brand-logo-latam {
-    height: 26px;
+    height: 22px;
   }
 
   .brand-logo-quirohome {
-    height: 48px;
-    max-width: 140px;
+    height: 40px;
+    max-width: 120px;
   }
 
   .stepper {
-    gap: 6px;
+    gap: 5px;
   }
 
   .step {
-    font-size: 11px;
-    gap: 4px;
+    font-size: 10px;
+    gap: 3px;
   }
 
   .step-dot {
-    width: 24px;
-    height: 24px;
-    font-size: 11px;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
   }
 
   .step-label {
@@ -2104,262 +2104,383 @@ button {
   }
 
   .screen {
-    padding: 14px 16px 20px;
-    gap: 12px;
+    padding: 12px 14px 18px;
+    gap: 10px;
   }
 
   .screen-paises {
-    padding: 14px 16px calc(48px + env(safe-area-inset-bottom, 0px));
+    padding: 12px 14px calc(44px + env(safe-area-inset-bottom, 0px));
   }
 
   .title {
-    font-size: 32px;
-    margin-top: 8px;
+    font-size: 22px;
+    margin-top: 6px;
   }
 
   .title-sm {
-    font-size: 24px;
+    font-size: 18px;
   }
 
   .subtitle {
-    font-size: 15px;
+    font-size: 12px;
   }
 
   .subtitle strong {
-    font-size: 18px;
-  }
-
-  .rut-display {
-    font-size: 30px;
-    padding: 16px 10px;
-    margin-top: 12px;
-    margin-bottom: 12px;
-  }
-
-  .key {
-    min-height: 56px;
-    padding: 12px 8px;
-    font-size: 26px;
-    border-radius: 16px;
-  }
-
-  .keypad {
-    gap: 8px;
-  }
-
-  .btn-primary {
-    min-height: 56px;
-    padding: 14px 18px;
-    font-size: 17px;
-  }
-
-  .row-btn {
-    padding: 16px 14px;
-    gap: 12px;
-  }
-
-  .row-title {
-    font-size: 18px;
-  }
-
-  .row-sub {
-    font-size: 13px;
-  }
-
-  .row-chevron {
-    font-size: 24px;
-  }
-
-  .doctor-avatar {
-    width: 46px;
-    height: 46px;
-    font-size: 15px;
-  }
-
-  .card-btn {
-    padding: 14px;
-  }
-
-  .card-btn-big {
-    padding: 20px 16px;
-  }
-
-  .card-btn-big .card-btn-title {
-    font-size: 22px;
-  }
-
-  .card-btn-big .card-btn-sub {
     font-size: 14px;
   }
 
+  .field-label {
+    font-size: 11px;
+  }
+
+  .rut-display {
+    font-size: 22px;
+    padding: 12px 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .error-text {
+    font-size: 12px;
+  }
+
+  .key {
+    min-height: 48px;
+    padding: 10px 6px;
+    font-size: 20px;
+    border-radius: 14px;
+  }
+
+  .keypad {
+    gap: 6px;
+  }
+
+  .btn-primary {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .row-btn {
+    padding: 12px 12px;
+    gap: 10px;
+  }
+
+  .row-title {
+    font-size: 14px;
+  }
+
+  .row-sub {
+    font-size: 11px;
+  }
+
+  .row-chevron {
+    font-size: 20px;
+  }
+
+  .doctor-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .card-btn {
+    padding: 12px;
+  }
+
+  .card-btn-title {
+    font-size: 14px;
+  }
+
+  .card-btn-sub {
+    font-size: 11px;
+  }
+
+  .card-btn-big {
+    padding: 16px 14px;
+  }
+
+  .card-btn-big .card-btn-title {
+    font-size: 16px;
+  }
+
+  .card-btn-big .card-btn-sub {
+    font-size: 12px;
+  }
+
   .card-btn-esp {
-    min-height: 108px;
-    padding: 16px 10px;
+    min-height: 92px;
+    padding: 12px 8px;
   }
 
   .esp-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 14px;
   }
 
   .esp-icon svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 
   .card-btn-esp .card-btn-title {
-    font-size: 15px;
+    font-size: 12px;
+  }
+
+  .chip {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .chip-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .segment {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .day-tab {
+    min-width: 96px;
+    padding: 8px 8px;
+    font-size: 11px;
   }
 
   .grid-2 {
-    gap: 10px;
+    gap: 8px;
   }
 
   .slots {
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: 6px;
   }
 
   .slot {
-    height: 50px;
+    height: 44px;
+    font-size: 13px;
+  }
+
+  .summary-row {
+    font-size: 12px;
+  }
+
+  .summary-row strong {
+    font-size: 13px;
+  }
+
+  .summary-row.total strong {
+    font-size: 15px;
+  }
+
+  .codigo {
+    font-size: 22px;
+  }
+
+  .resumen-line {
+    font-size: 13px;
+  }
+
+  .resumen-total {
     font-size: 16px;
   }
 
   .theme-switcher {
     bottom: calc(8px + env(safe-area-inset-bottom, 0px));
     max-width: calc(100% - 24px);
-    gap: 4px;
+    gap: 3px;
     padding: 3px;
   }
 
   .theme-pill {
-    padding: 6px 8px;
-    font-size: 10px;
-    gap: 3px;
+    padding: 5px 7px;
+    font-size: 9px;
+    gap: 2px;
   }
 
   .theme-pill-icon {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .flight-map {
-    height: 200px;
+    height: 180px;
   }
 
   .flight-map-compact .flight-map {
-    height: 160px;
+    height: 140px;
   }
 
   .totem.avatar-mapa-mode .flight-map {
-    height: 240px;
+    height: 200px;
   }
 
   .totem.avatar-mapa-mode .flight-map-compact .flight-map {
-    height: 180px;
+    height: 150px;
+  }
+
+  .route-banner-inline .route-codes {
+    font-size: 14px;
+  }
+
+  .route-codes {
+    font-size: 16px;
+  }
+
+  .route-sub {
+    font-size: 11px;
   }
 
   .paises-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: 6px;
   }
 
   .destinos-grid-3 {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .destinos-grid-3 .row-title {
+    font-size: 12px;
+  }
+
   .dest-flag {
-    font-size: 28px;
+    font-size: 22px;
   }
 
   .card-btn-pais .dest-flag {
-    font-size: 32px;
-  }
-
-  .card-btn-pais .card-btn-title {
-    font-size: 14px;
-  }
-
-  .qh-tipo-card {
-    padding: 20px 16px;
-    gap: 14px;
-  }
-
-  .qh-tipo-card .card-btn-title {
-    font-size: 22px;
-  }
-
-  .qh-icon-lg {
-    width: 52px;
-    height: 52px;
-  }
-
-  .qh-servicio-row {
-    padding: 18px 14px;
-    min-height: auto;
-    gap: 12px;
-  }
-
-  .qh-servicio-row .row-title {
-    font-size: 16px;
-  }
-
-  .qh-servicio-row .row-sub {
-    font-size: 13px;
-  }
-
-  .qh-precio {
-    font-size: 20px;
-  }
-
-  .qh-cal-header {
-    font-size: 18px;
-    padding: 12px;
-  }
-
-  .qh-cal-weekdays span {
-    font-size: 10px;
-    padding: 8px 2px;
-  }
-
-  .qh-cal-day {
-    min-height: 40px;
-    font-size: 15px;
-  }
-
-  .qh-cal-empty {
-    min-height: 40px;
-  }
-
-  .qh-onboard-title {
     font-size: 26px;
   }
 
-  .qh-input-onboard {
-    min-height: 64px;
-    padding: 18px 16px;
-    font-size: 22px;
+  .card-btn-pais .card-btn-title {
+    font-size: 12px;
   }
 
-  .qh-onboarding-rut .qh-rut-onboard {
-    font-size: 34px;
+  .card-btn-pais .card-btn-sub {
+    font-size: 10px;
   }
 
-  .qh-onboard-btn {
-    min-height: 60px;
+  .subtitle-paises {
+    font-size: 13px;
+  }
+
+  .qh-tipo-card {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .qh-tipo-card .card-btn-title {
+    font-size: 16px;
+  }
+
+  .qh-tipo-card .card-btn-sub {
+    font-size: 11px;
+  }
+
+  .qh-icon-lg {
+    width: 42px;
+    height: 42px;
+  }
+
+  .qh-icon-lg svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .qh-servicio-row {
+    padding: 12px 10px;
+    min-height: auto;
+    gap: 10px;
+  }
+
+  .qh-servicio-row .row-title {
+    font-size: 13px;
+  }
+
+  .qh-servicio-row .row-sub {
+    font-size: 11px;
+  }
+
+  .qh-precio {
+    font-size: 15px;
+  }
+
+  .qh-cal-header {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .qh-cal-weekdays span {
+    font-size: 9px;
+    padding: 6px 2px;
+  }
+
+  .qh-cal-day {
+    min-height: 34px;
+    font-size: 12px;
+  }
+
+  .qh-cal-empty {
+    min-height: 34px;
+  }
+
+  .qh-onboard-title {
     font-size: 18px;
   }
 
+  .qh-onboard-label {
+    font-size: 11px;
+  }
+
+  .qh-input,
+  .qh-input-onboard {
+    min-height: 52px;
+    padding: 14px 14px;
+    font-size: 16px;
+  }
+
+  .qh-onboarding-rut .qh-rut-onboard {
+    font-size: 24px;
+  }
+
+  .qh-onboard-btn {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
   .summary-card {
-    padding: 14px 16px;
+    padding: 12px 14px;
+  }
+
+  .boarding-pnr {
+    font-size: 16px;
   }
 
   .boarding-code {
-    font-size: 28px;
+    font-size: 22px;
+  }
+
+  .boarding-city {
+    font-size: 11px;
   }
 
   .boarding-route {
-    padding: 16px 14px;
+    padding: 12px 12px;
+  }
+
+  .boarding-meta {
+    font-size: 11px;
+  }
+
+  .boarding-footer {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+
+  .btn-back-top,
+  .btn-back {
+    font-size: 13px;
   }
 }
 
@@ -2377,8 +2498,16 @@ button {
   }
 
   .title {
-    font-size: 26px;
-    margin-top: 4px;
+    font-size: 18px;
+    margin-top: 2px;
+  }
+
+  .title-sm {
+    font-size: 16px;
+  }
+
+  .subtitle {
+    font-size: 11px;
   }
 
   .screen {
