@@ -1,10 +1,22 @@
 /** Catálogo y reservas de vuelos simuladas (localStorage). */
 
-import { getDestinoById } from './destinos'
+import { getDestinoById, ORIGEN } from './destinos'
 
 const KEY = 'totem-vuelos-v1'
 
 const HORARIOS = ['06:40', '09:15', '12:30', '15:45', '18:20', '21:10']
+
+function distKm(a, b) {
+  const R = 6371
+  const dLat = ((b.lat - a.lat) * Math.PI) / 180
+  const dLng = ((b.lng - a.lng) * Math.PI) / 180
+  const x =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((a.lat * Math.PI) / 180) *
+      Math.cos((b.lat * Math.PI) / 180) *
+      Math.sin(dLng / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x))
+}
 
 function readAll() {
   try {
@@ -28,10 +40,10 @@ export function buscarVuelos({ destinoId, fechaIda, fechaVuelta, idaYVuelta }) {
   if (!destino) return []
 
   const ida = new Date(fechaIda)
-  const distFactor = Math.abs(destino.mapX - 28) + Math.abs(destino.mapY - 72)
+  const km = distKm(ORIGEN, destino)
 
   return HORARIOS.slice(0, 4).map((hora, i) => {
-    const base = 69000 + i * 11000 + distFactor * 800
+    const base = 59000 + i * 10000 + km * 45
     const precio = idaYVuelta ? base * 1.75 : base
     return {
       id: `${destinoId}-${fechaIda}-${hora}`,

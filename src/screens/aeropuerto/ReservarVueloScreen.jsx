@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import BackButton from '../../components/BackButton'
-import WorldMap from '../../components/WorldMap'
+import FlightMap from '../../components/FlightMap'
 import { getDestinoById, getPaisById, PAISES } from '../../data/destinos'
 import {
   buscarVuelos,
@@ -25,6 +25,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
 
   const pais = getPaisById(paisId)
   const destino = getDestinoById(destinoId)
+  const eligiendoCiudad = paso === 0 && subDestino === 'ciudad'
 
   useEffect(() => {
     tts.speak('Elige el país de destino. Si viajas dentro de Chile, podrás elegir la región.')
@@ -90,22 +91,39 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
         ? '← Volver a países'
         : '← Volver al menú'
 
+  const subtitulo =
+    paso === 0 && subDestino === 'pais'
+      ? 'Selecciona el país de destino'
+      : paso === 0 && subDestino === 'ciudad' && pais?.esNacional
+        ? 'Elige región de destino'
+        : paso === 0 && subDestino === 'ciudad' && pais
+          ? `Ciudad en ${pais.nombre}`
+          : paso === 1
+            ? 'Tipo de viaje y fechas'
+            : paso === 2
+              ? 'Elige tu horario'
+              : paso === 3
+                ? 'Confirma tu reserva'
+                : ''
+
   return (
-    <div className="screen screen-scroll">
+    <div className={`screen screen-scroll ${eligiendoCiudad ? 'screen-reserva-compact' : ''}`}>
       <BackButton onClick={volverDestino}>{labelVolver}</BackButton>
-      <h1 className="title">Reservar vuelo</h1>
-      <p className="subtitle">
-        {paso === 0 && subDestino === 'pais' && 'Selecciona el país de destino'}
-        {paso === 0 && subDestino === 'ciudad' && pais?.esNacional && 'Elige región de destino'}
-        {paso === 0 && subDestino === 'ciudad' && pais && !pais.esNacional && `Ciudad en ${pais.nombre}`}
-        {paso === 1 && 'Tipo de viaje y fechas'}
-        {paso === 2 && 'Elige tu horario'}
-        {paso === 3 && 'Confirma tu reserva'}
-      </p>
+
+      {!eligiendoCiudad && paso < 2 && <h1 className="title">Reservar vuelo</h1>}
+
+      {eligiendoCiudad && pais && (
+        <p className="subtitle subtitle-route">
+          <span className="world-map-flag">{pais.bandera}</span>
+          {pais.esNacional ? 'Regiones de Chile' : pais.nombre}
+        </p>
+      )}
+
+      {!eligiendoCiudad && subtitulo && <p className="subtitle">{subtitulo}</p>}
 
       {paso === 0 && subDestino === 'pais' && (
         <>
-          <WorldMap />
+          <FlightMap compact={false} />
           <div className="paises-grid">
             {PAISES.map((p) => (
               <button
@@ -129,9 +147,9 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
 
       {paso === 0 && subDestino === 'ciudad' && pais && (
         <>
-          <WorldMap pais={pais} destino={destino} />
+          <FlightMap pais={pais} destino={destino} compact />
 
-          <div className={pais.esNacional ? 'regiones-list' : 'grid-2 destinos-grid'}>
+          <div className={pais.esNacional ? 'regiones-list regiones-list-compact' : 'grid-2 destinos-grid'}>
             {pais.destinos.map((d) => {
               const full = getDestinoById(d.id)
               return (
@@ -175,7 +193,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
         <>
           {destino && (
             <div className="route-banner route-banner-light">
-              <WorldMap pais={pais} destino={destino} />
+              <FlightMap pais={pais} destino={destino} compact />
               <span className="route-codes">SCL → {destino.codigo}</span>
               <span className="route-sub">
                 {destino.ciudad}
@@ -251,7 +269,8 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
 
       {paso === 2 && (
         <>
-          <div className="route-banner route-banner-light">
+          <h1 className="title title-sm">Elige tu horario</h1>
+          <div className="route-banner route-banner-light route-banner-inline">
             <span className="route-codes">SCL → {destino?.codigo}</span>
             <span className="route-sub">{destino?.ciudad}</span>
           </div>
@@ -293,6 +312,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
 
       {paso === 3 && vueloSel && (
         <>
+          <h1 className="title title-sm">Confirmar reserva</h1>
           <div className="summary-card">
             <div className="summary-row">
               <span>Ruta</span>

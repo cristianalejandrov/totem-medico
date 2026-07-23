@@ -1031,35 +1031,77 @@ button {
   line-height: 1;
 }
 
-/* ---- Mapa mundial ---- */
-.world-map-wrap {
+/* ---- Mapa Leaflet (OpenStreetMap) ---- */
+.flight-map-wrap {
   width: 100%;
-  border-radius: var(--radio);
+  border-radius: 16px;
   overflow: hidden;
   border: 2px solid var(--celeste-borde);
   background: #fff;
 }
 
-.world-map {
-  display: block;
+.flight-map {
   width: 100%;
-  height: auto;
-  aspect-ratio: 2 / 1;
-  min-height: 140px;
+  height: 150px;
+  z-index: 0;
+}
+
+.flight-map-compact .flight-map {
+  height: 96px;
+}
+
+.flight-map-wrap .leaflet-container {
+  font-family: inherit;
+  background: #e8f0fe;
+}
+
+.flight-map-wrap .leaflet-control-attribution {
+  font-size: 9px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2px 6px;
+}
+
+.map-pin-wrap {
+  background: none !important;
+  border: none !important;
+}
+
+.map-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+  border: 2px solid #fff;
+}
+
+.map-pin-origin {
+  background: #1b0088;
+}
+
+.map-pin-dest {
+  background: #e8114b;
 }
 
 .world-map-legend-muted {
   color: var(--gris);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .world-map-legend {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
-  font-size: 14px;
+  padding: 8px 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--ink);
   background: var(--celeste-suave);
@@ -1067,7 +1109,60 @@ button {
 }
 
 .world-map-flag {
+  font-size: 20px;
+}
+
+.screen-reserva-compact {
+  gap: 10px;
+  padding-top: 16px;
+}
+
+.screen-reserva-compact .btn-back-top {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.subtitle-route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-top: 0;
+}
+
+.title-sm {
+  font-size: 32px;
+  margin-top: 4px;
+}
+
+.regiones-list-compact {
+  max-height: none;
+}
+
+.regiones-list-compact .destino-row {
+  padding: 14px 16px;
+}
+
+.route-banner-light .flight-map-wrap {
+  border: none;
+  margin: -4px -4px 4px;
+}
+
+.route-banner-inline {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.route-banner-inline .route-codes {
+  font-size: 18px;
+}
+
+.route-banner-inline .route-sub {
+  text-align: right;
 }
 
 /* ---- Países y regiones ---- */
@@ -1075,7 +1170,7 @@ button {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  max-height: 340px;
+  max-height: 280px;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -1132,11 +1227,6 @@ button {
   color: var(--ink);
   padding: 12px;
   gap: 8px;
-}
-
-.route-banner-light .world-map-wrap {
-  border: none;
-  margin: -4px -4px 4px;
 }
 
 .route-codes {

@@ -4,8 +4,66 @@ export const ORIGEN = {
   codigo: 'SCL',
   ciudad: 'Santiago',
   pais: 'Chile',
+  lat: -33.393,
+  lng: -70.7858,
   mapX: 28,
   mapY: 72,
+}
+
+/** Coordenadas aeropuerto por destino [lat, lng]. */
+const COORDS = {
+  'cl-scl': [-33.393, -70.7858],
+  'cl-ari': [-18.348, -70.339],
+  'cl-iqq': [-20.535, -70.181],
+  'cl-anf': [-23.444, -70.445],
+  'cl-cjc': [-22.498, -68.904],
+  'cl-lsc': [-29.916, -71.202],
+  'cl-vap': [-33.046, -71.619],
+  'cl-qrc': [-34.17, -70.775],
+  'cl-tlx': [-35.426, -71.655],
+  'cl-ccp': [-36.772, -73.063],
+  'cl-zco': [-38.766, -72.637],
+  'cl-zal': [-39.65, -73.086],
+  'cl-pmc': [-41.438, -73.094],
+  'cl-gxq': [-45.594, -72.106],
+  'cl-puq': [-53.003, -70.854],
+  'ar-eze': [-34.822, -58.536],
+  'ar-cor': [-31.323, -64.208],
+  'ar-mdz': [-32.832, -68.792],
+  'pe-lim': [-12.022, -77.114],
+  'pe-cuz': [-13.536, -71.939],
+  'co-bog': [4.702, -74.147],
+  'co-med': [6.165, -75.423],
+  'br-gru': [-23.436, -46.473],
+  'br-gig': [-22.809, -43.25],
+  'mx-mex': [19.436, -99.072],
+  'mx-cun': [21.037, -86.877],
+  'us-mia': [25.793, -80.291],
+  'us-jfk': [40.641, -73.778],
+  'us-lax': [33.942, -118.408],
+  'ca-yyz': [43.677, -79.624],
+  'es-mad': [40.472, -3.561],
+  'es-bcn': [41.297, 2.078],
+  'fr-cdg': [49.01, 2.548],
+  'gb-lhr': [51.47, -0.454],
+  'de-fra': [50.037, 8.562],
+  'it-fco': [41.8, 12.238],
+  'pt-lis': [38.774, -9.134],
+  'jp-nrt': [35.772, 140.392],
+  'jp-kix': [34.434, 135.244],
+  'kr-icn': [37.46, 126.441],
+  'cn-pvg': [31.144, 121.808],
+  'cn-pek': [40.08, 116.585],
+  'in-del': [28.556, 77.1],
+  'ae-dxb': [25.253, 55.366],
+  'au-syd': [-33.946, 151.177],
+  'au-mel': [-37.673, 144.843],
+  'nz-akl': [-37.008, 174.792],
+  'za-jnb': [-26.139, 28.246],
+  'ec-uio': [-0.129, -78.358],
+  'uy-mvd': [-34.838, -56.031],
+  'pa-pty': [9.071, -79.383],
+  'cr-sjo': [9.994, -84.209],
 }
 
 /** @typedef {{ id: string, ciudad: string, codigo: string, region?: string, capital?: boolean }} Destino */
@@ -275,8 +333,11 @@ const destinoIndex = new Map()
 
 for (const pais of PAISES) {
   for (const d of pais.destinos) {
+    const c = COORDS[d.id] || [0, 0]
     destinoIndex.set(d.id, {
       ...d,
+      lat: c[0],
+      lng: c[1],
       pais: pais.nombre,
       bandera: pais.bandera,
       mapX: pais.mapX,
@@ -294,5 +355,6 @@ export function getDestinoById(id) {
 }
 
 export function getCapital(pais) {
-  return pais.destinos.find((d) => d.capital) || pais.destinos[0]
+  const cap = pais.destinos.find((d) => d.capital) || pais.destinos[0]
+  return getDestinoById(cap.id) || cap
 }
