@@ -18,7 +18,7 @@ const COPY = {
     title: 'Identificación',
     subtitle: 'Ingresa tu RUT o documento de viaje',
     bienvenida:
-      'Bienvenido al aeropuerto Inclusive. Ingresa tu número de cédula o documento para consultar o reservar vuelos.',
+      'Bienvenido a LATAM Airlines. Ingresa tu número de cédula o documento para consultar o reservar vuelos.',
     error: 'Identificación incorrecta.',
     ayuda:
       'Verifica tu número de documento. Si eres extranjero, ingresa tu RUT chileno o número de reserva asociado.',

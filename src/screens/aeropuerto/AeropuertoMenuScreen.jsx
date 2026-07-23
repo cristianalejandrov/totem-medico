@@ -5,7 +5,7 @@ import { tts } from '../../voice/tts'
 export default function AeropuertoMenuScreen({ rut, onReservar, onMisVuelos, onSalir }) {
   useEffect(() => {
     tts.speak(
-      'Bienvenido al aeropuerto. Puedes ver tus vuelos reservados o reservar un nuevo vuelo.',
+      'Bienvenido a LATAM Airlines. Puedes ver tus vuelos reservados o reservar un nuevo vuelo.',
     )
   }, [])
 

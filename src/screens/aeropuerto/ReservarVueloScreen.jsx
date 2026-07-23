@@ -68,16 +68,26 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
   }
 
   const volverDestino = () => {
+    if (paso > 0) {
+      setPaso((p) => p - 1)
+      return
+    }
     if (subDestino === 'ciudad') {
       setSubDestino('pais')
       setPaisId(null)
       setDestinoId(null)
-    } else if (paso === 0) {
-      onBack()
-    } else {
-      setPaso((p) => p - 1)
+      tts.speak('Elige el país de destino.')
+      return
     }
+    onBack()
   }
+
+  const labelVolver =
+    paso > 0
+      ? '← Volver'
+      : subDestino === 'ciudad'
+        ? '← Volver a países'
+        : '← Volver al menú'
 
   return (
     <div className="screen screen-scroll">
@@ -326,7 +336,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
       )}
 
       <button type="button" className="btn-ghost" onClick={volverDestino}>
-        ← Volver
+        {labelVolver}
       </button>
     </div>
   )
