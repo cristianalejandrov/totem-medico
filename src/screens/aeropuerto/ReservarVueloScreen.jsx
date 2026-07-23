@@ -27,6 +27,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack, onMapMod
   const destino = getDestinoById(destinoId)
   const eligiendoPaises = paso === 0 && subDestino === 'pais'
   const eligiendoCiudad = paso === 0 && subDestino === 'ciudad'
+  const eligiendoDestino = paso === 0
 
   useEffect(() => {
     tts.speak('Elige el país de destino. Si viajas dentro de Chile, podrás elegir la región.')
@@ -113,96 +114,98 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack, onMapMod
                 : ''
 
   return (
-    <div
-      className={`screen screen-scroll ${eligiendoCiudad ? 'screen-reserva-compact' : ''} ${eligiendoPaises ? 'screen-paises' : ''}`}
-    >
-      {!eligiendoPaises && (
+    <div className={`screen screen-scroll ${eligiendoDestino ? 'screen-paises' : ''}`}>
+      {!eligiendoDestino && (
         <BackButton onClick={volverDestino}>{labelVolver}</BackButton>
       )}
 
-      {eligiendoCiudad && pais && (
-        <p className="subtitle subtitle-route">
-          <span className="world-map-flag">{pais.bandera}</span>
-          {pais.esNacional ? 'Regiones de Chile' : pais.nombre}
-        </p>
-      )}
-
-      {!eligiendoPaises && !eligiendoCiudad && paso < 2 && subtitulo && (
+      {!eligiendoDestino && paso < 2 && subtitulo && (
         <p className="subtitle">{subtitulo}</p>
       )}
 
-      {eligiendoPaises && (
+      {eligiendoDestino && (
         <div className="paises-layout">
           <div className="paises-sticky">
             <BackButton onClick={volverDestino}>{labelVolver}</BackButton>
-            <p className="subtitle subtitle-paises">Selecciona el país de destino</p>
-            <FlightMap compact={false} />
+            {eligiendoPaises && (
+              <p className="subtitle subtitle-paises">Selecciona el país de destino</p>
+            )}
+            {eligiendoCiudad && pais && (
+              <p className="subtitle subtitle-route">
+                <span className="world-map-flag">{pais.bandera}</span>
+                {pais.esNacional ? 'Regiones de Chile' : pais.nombre}
+              </p>
+            )}
+            <FlightMap
+              pais={eligiendoCiudad ? pais : undefined}
+              destino={eligiendoCiudad ? destino : undefined}
+              compact={false}
+            />
           </div>
           <div className="paises-scroll">
-            <div className="paises-grid">
-              {PAISES.map((p) => (
+            {eligiendoPaises && (
+              <div className="paises-grid">
+                {PAISES.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    className={`card-btn card-btn-pais ${paisId === p.id ? 'selected' : ''}`}
+                    onClick={() => elegirPais(p)}
+                  >
+                    <span className="dest-flag">{p.bandera}</span>
+                    <span className="card-btn-title">{p.nombre}</span>
+                    <span className="card-btn-sub">
+                      {p.esNacional
+                        ? `${p.destinos.length} regiones`
+                        : p.destinos.find((d) => d.capital)?.ciudad || p.destinos[0].ciudad}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {eligiendoCiudad && pais && (
+              <>
+                <div className={pais.esNacional ? 'regiones-list' : 'destinos-grid destinos-grid-3'}>
+                  {pais.destinos.map((d) => {
+                    const full = getDestinoById(d.id)
+                    return (
+                      <button
+                        key={d.id}
+                        type="button"
+                        className={`row-btn destino-row ${destinoId === d.id ? 'selected' : ''}`}
+                        onClick={() => setDestinoId(d.id)}
+                      >
+                        <div className="row-main">
+                          <span className="row-title">
+                            {d.ciudad}
+                            {d.capital && !pais.esNacional && (
+                              <span className="chip chip-capital">Capital</span>
+                            )}
+                          </span>
+                          <span className="row-sub">
+                            {d.region || full?.pais} · {d.codigo}
+                          </span>
+                        </div>
+                        <span className="row-chevron">›</span>
+                      </button>
+                    )
+                  })}
+                </div>
                 <button
-                  key={p.id}
                   type="button"
-                  className={`card-btn card-btn-pais ${paisId === p.id ? 'selected' : ''}`}
-                  onClick={() => elegirPais(p)}
+                  className="btn-primary paises-continuar"
+                  disabled={!destinoId}
+                  onClick={() =>
+                    irPaso(1, 'Indica si es solo ida o ida y vuelta, y elige las fechas.')
+                  }
                 >
-                  <span className="dest-flag">{p.bandera}</span>
-                  <span className="card-btn-title">{p.nombre}</span>
-                  <span className="card-btn-sub">
-                    {p.esNacional
-                      ? `${p.destinos.length} regiones`
-                      : p.destinos.find((d) => d.capital)?.ciudad || p.destinos[0].ciudad}
-                  </span>
+                  Continuar
                 </button>
-              ))}
-            </div>
+              </>
+            )}
           </div>
         </div>
-      )}
-
-      {paso === 0 && subDestino === 'ciudad' && pais && (
-        <>
-          <FlightMap pais={pais} destino={destino} compact />
-
-          <div className={pais.esNacional ? 'regiones-list regiones-list-compact' : 'grid-2 destinos-grid'}>
-            {pais.destinos.map((d) => {
-              const full = getDestinoById(d.id)
-              return (
-                <button
-                  key={d.id}
-                  type="button"
-                  className={`row-btn destino-row ${destinoId === d.id ? 'selected' : ''}`}
-                  onClick={() => setDestinoId(d.id)}
-                >
-                  <div className="row-main">
-                    <span className="row-title">
-                      {d.ciudad}
-                      {d.capital && !pais.esNacional && (
-                        <span className="chip chip-capital">Capital</span>
-                      )}
-                    </span>
-                    <span className="row-sub">
-                      {d.region || full?.pais} · {d.codigo}
-                    </span>
-                  </div>
-                  <span className="row-chevron">›</span>
-                </button>
-              )
-            })}
-          </div>
-
-          <button
-            type="button"
-            className="btn-primary"
-            disabled={!destinoId}
-            onClick={() =>
-              irPaso(1, 'Indica si es solo ida o ida y vuelta, y elige las fechas.')
-            }
-          >
-            Continuar
-          </button>
-        </>
       )}
 
       {paso === 1 && (

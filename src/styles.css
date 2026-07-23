@@ -1202,11 +1202,35 @@ button {
 /* ---- Países y regiones ---- */
 .paises-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
   align-content: start;
-  overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 2px;
+}
+
+.destinos-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.destinos-grid-3 .destino-row {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 14px 12px;
+  gap: 4px;
+}
+
+.destinos-grid-3 .row-chevron {
+  display: none;
+}
+
+.destinos-grid-3 .row-title {
+  font-size: 15px;
+}
+
+.paises-continuar {
+  margin-top: 12px;
 }
 
 .screen-paises {
@@ -1270,28 +1294,30 @@ button {
 .card-btn-pais {
   align-items: center;
   text-align: center;
-  padding: 12px 10px;
-  min-height: 88px;
+  padding: 14px 8px 12px;
+  min-height: 108px;
+  gap: 4px;
 }
 
 .card-btn-pais .dest-flag {
-  font-size: 32px;
+  font-size: 52px;
+  line-height: 1;
 }
 
 .card-btn-pais .card-btn-title {
-  font-size: 15px;
+  font-size: 13px;
+  line-height: 1.2;
 }
 
 .card-btn-pais .card-btn-sub {
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.25;
 }
 
 .regiones-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 320px;
-  overflow-y: auto;
 }
 
 .destino-row {
