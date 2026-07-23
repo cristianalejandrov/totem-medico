@@ -115,10 +115,6 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
         <BackButton onClick={volverDestino}>{labelVolver}</BackButton>
       )}
 
-      {!eligiendoPaises && !eligiendoCiudad && paso < 2 && (
-        <h1 className="title">Reservar vuelo</h1>
-      )}
-
       {eligiendoCiudad && pais && (
         <p className="subtitle subtitle-route">
           <span className="world-map-flag">{pais.bandera}</span>
