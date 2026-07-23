@@ -7,7 +7,8 @@ import {
   SERVICIOS,
   SUCURSALES,
   TIPOS_SERVICIO,
-  diasCalendario,
+  DIAS_SEMANA,
+  calendarioPorMeses,
   formatCLP,
   formatFechaCorta,
   formatFechaLarga,
@@ -18,6 +19,114 @@ import { cleanRut, formatRut, validateRut } from '../../utils/rut'
 import { tts } from '../../voice/tts'
 
 const PASOS = ['sucursal', 'servicio', 'subServicio', 'profesional', 'calendario', 'horario', 'datos', 'confirmacion']
+
+const QH_ICONS = {
+  masaje: (
+    <>
+      <path
+        d="M8 14c0-2.2 1.8-4 4-4s4 1.8 4 4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6 10c1.5-2 3.5-3 6-3s4.5 1 6 3M5 17l2-2M19 17l-2-2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </>
+  ),
+  columna: (
+    <>
+      <path
+        d="M12 3v18"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <circle cx="12" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="12" cy="10.5" r="1.5" fill="currentColor" />
+      <circle cx="12" cy="15" r="1.5" fill="currentColor" />
+      <circle cx="12" cy="19.5" r="1.5" fill="currentColor" />
+      <path
+        d="M8.5 8.5 6 7M15.5 8.5 18 7M8.5 15.5 6 17M15.5 15.5 18 17"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </>
+  ),
+  rostro: (
+    <>
+      <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="9.5" cy="11" r="0.9" fill="currentColor" />
+      <circle cx="14.5" cy="11" r="0.9" fill="currentColor" />
+      <path
+        d="M9.5 15.2c.8.8 1.9 1.3 2.5 1.3s1.7-.5 2.5-1.3"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </>
+  ),
+  cuerpo: (
+    <>
+      <circle cx="12" cy="6.5" r="2.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M12 9v5M9 12h6M10 19l2-5 2 5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </>
+  ),
+  control: (
+    <>
+      <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M12 8v4l2.5 2.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </>
+  ),
+  profesional: (
+    <>
+      <circle cx="12" cy="8" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M5 20c1.5-3 4-4.5 7-4.5s5.5 1.5 7 4.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M16.5 5.5 18 4M18.5 8h2"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </>
+  ),
+}
+
+function QhIcon({ name, className = 'esp-icon qh-icon' }) {
+  return (
+    <span className={className} aria-hidden="true">
+      <svg viewBox="0 0 24 24">{QH_ICONS[name] || QH_ICONS.masaje}</svg>
+    </span>
+  )
+}
 
 export default function QuirohomeFlow({ onFinish, onStepChange }) {
   const [paso, setPaso] = useState('sucursal')
@@ -35,9 +144,9 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
     onStepChange?.(PASO_QUIROHOME[paso] ?? 0)
   }, [paso, onStepChange])
 
-  const dias = useMemo(() => {
+  const mesesCal = useMemo(() => {
     if (!sel.sucursal || !sel.profesional) return []
-    return diasCalendario(sel.sucursal.id, sel.profesional.id)
+    return calendarioPorMeses(sel.sucursal.id, sel.profesional.id)
   }, [sel.sucursal, sel.profesional])
 
   const horarios = useMemo(() => {
@@ -120,18 +229,24 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
         <>
           <h1 className="title title-sm">Selecciona consulta</h1>
           <p className="subtitle">{sel.sucursal?.nombre}</p>
-          <div className="menu-options">
+          <div className="menu-options qh-tipos">
             {TIPOS_SERVICIO.map((t) => (
               <button
                 key={t.id}
                 type="button"
-                className="card-btn card-btn-big"
+                className="card-btn card-btn-big qh-tipo-card"
                 onClick={() => {
                   setSel((s) => ({ ...s, tipo: t }))
                   ir('subServicio', `Elige el tipo de ${t.nombre.toLowerCase()}.`)
                 }}
               >
-                <span className="card-btn-title">{t.nombre}</span>
+                <QhIcon name={t.icono} className="esp-icon qh-icon qh-icon-lg" />
+                <div className="qh-tipo-text">
+                  <span className="card-btn-title">{t.nombre}</span>
+                  <span className="card-btn-sub">
+                    {t.id === 'masoterapia' ? 'Masajes y relajación' : 'Ajustes y controles'}
+                  </span>
+                </div>
               </button>
             ))}
           </div>
@@ -142,7 +257,7 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
         <>
           <h1 className="title title-sm">{sel.tipo.nombre}</h1>
           <p className="subtitle">Elige tu servicio</p>
-          <div className="list">
+          <div className="list qh-servicios">
             {SERVICIOS[sel.tipo.id].map((srv) => (
               <button
                 key={srv.id}
@@ -153,6 +268,7 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
                   ir('profesional', 'Elige el profesional que te atenderá.')
                 }}
               >
+                <QhIcon name={srv.icono} />
                 <div className="row-main">
                   <span className="row-title">{srv.nombre}</span>
                   <span className="row-sub">
@@ -201,23 +317,36 @@ export default function QuirohomeFlow({ onFinish, onStepChange }) {
         <>
           <h1 className="title title-sm">Elige el día</h1>
           <p className="subtitle">{sel.profesional?.nombre}</p>
-          <div className="qh-calendario">
-            {dias.map((d) => (
-              <button
-                key={d.fecha.toISOString()}
-                type="button"
-                disabled={!d.disponible}
-                className={`qh-dia ${!d.disponible ? 'qh-dia-off' : ''} ${fechaSel?.toDateString() === d.fecha.toDateString() ? 'active' : ''}`}
-                onClick={() => {
-                  setFechaSel(d.fecha)
-                  ir('horario', `Horarios disponibles para el ${formatFechaCorta(d.fecha)}.`)
-                }}
-              >
-                <span className="qh-dia-num">{d.fecha.getDate()}</span>
-                <span className="qh-dia-wd">
-                  {d.fecha.toLocaleDateString('es-CL', { weekday: 'short' })}
-                </span>
-              </button>
+          <div className="qh-calendarios">
+            {mesesCal.map((mes) => (
+              <div key={mes.key} className="qh-cal-wrap">
+                <div className="qh-cal-header capitalize">{mes.label}</div>
+                <div className="qh-cal-weekdays">
+                  {DIAS_SEMANA.map((d) => (
+                    <span key={d}>{d}</span>
+                  ))}
+                </div>
+                <div className="qh-cal-grid">
+                  {mes.cells.map((cell, i) =>
+                    cell.type === 'empty' ? (
+                      <span key={`e-${mes.key}-${i}`} className="qh-cal-empty" aria-hidden="true" />
+                    ) : (
+                      <button
+                        key={cell.fecha.toISOString()}
+                        type="button"
+                        disabled={!cell.disponible}
+                        className={`qh-cal-day ${!cell.disponible ? 'qh-cal-day-off' : ''} ${fechaSel?.toDateString() === cell.fecha.toDateString() ? 'active' : ''}`}
+                        onClick={() => {
+                          setFechaSel(cell.fecha)
+                          ir('horario', `Horarios disponibles para el ${formatFechaCorta(cell.fecha)}.`)
+                        }}
+                      >
+                        {cell.fecha.getDate()}
+                      </button>
+                    ),
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </>

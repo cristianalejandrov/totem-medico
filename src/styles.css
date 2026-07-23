@@ -1696,8 +1696,9 @@ button {
 }
 
 .brand-logo-quirohome {
-  height: 36px;
+  height: 56px;
   width: auto;
+  max-width: 180px;
   object-fit: contain;
 }
 
@@ -1770,58 +1771,154 @@ button {
 
 .qh-servicio-row {
   align-items: center;
+  padding: 26px 22px;
+  gap: 18px;
+  min-height: 96px;
+}
+
+.qh-servicio-row .row-title {
+  font-size: 24px;
+}
+
+.qh-servicio-row .row-sub {
+  font-size: 16px;
+}
+
+.qh-icon {
+  flex-shrink: 0;
+}
+
+.qh-icon-lg {
+  width: 64px;
+  height: 64px;
+  border-radius: 22px;
+}
+
+.qh-icon-lg svg {
+  width: 34px;
+  height: 34px;
+}
+
+.qh-tipo-card {
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 32px 24px;
+  text-align: left;
+}
+
+.qh-tipo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.qh-tipo-card .card-btn-title {
+  font-size: 28px;
+}
+
+.qh-tipo-card .card-btn-sub {
+  font-size: 17px;
+}
+
+.qh-servicios {
+  gap: 14px;
 }
 
 .qh-precio {
-  font-size: 17px;
+  font-size: 28px;
   font-weight: 800;
   color: var(--celeste-oscuro);
   white-space: nowrap;
+  letter-spacing: -0.02em;
 }
 
-.qh-calendario {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-}
-
-.qh-dia {
+.qh-calendarios {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 64px;
-  padding: 8px 4px;
-  border-radius: 14px;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.qh-cal-wrap {
   border: 2px solid var(--celeste-borde);
+  border-radius: var(--radio);
+  overflow: hidden;
   background: #fff;
-  font-weight: 700;
-  transition: background 0.15s, border-color 0.15s;
+  box-shadow: var(--sombra);
 }
 
-.qh-dia.active {
-  border-color: var(--celeste);
+.qh-cal-header {
+  background: linear-gradient(135deg, var(--celeste), var(--celeste-oscuro));
+  color: #fff;
+  padding: 16px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.qh-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   background: var(--celeste-suave);
-  color: var(--celeste-oscuro);
+  border-bottom: 2px solid var(--celeste-borde);
 }
 
-.qh-dia-off {
+.qh-cal-weekdays span {
+  padding: 12px 4px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--celeste-oscuro);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.qh-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.qh-cal-empty {
+  min-height: 56px;
+  background: #f8faf9;
+  border: 1px solid #eef2f0;
+}
+
+.qh-cal-day {
+  min-height: 56px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #eef2f0;
+  background: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.qh-cal-day:active:not(:disabled) {
+  background: var(--celeste-suave);
+  border-color: var(--celeste);
+}
+
+.qh-cal-day.active {
+  background: var(--celeste);
+  border-color: var(--celeste-oscuro);
+  color: #fff;
+}
+
+.qh-cal-day-off {
   opacity: 0.35;
   background: var(--gris-suave);
-  border-color: #e2e8f0;
   cursor: not-allowed;
-}
-
-.qh-dia-num {
-  font-size: 20px;
-  line-height: 1.1;
-}
-
-.qh-dia-wd {
-  font-size: 11px;
-  text-transform: capitalize;
   color: var(--gris);
-  font-weight: 600;
+  text-decoration: line-through;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 .qh-field {
