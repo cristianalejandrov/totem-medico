@@ -1,18 +1,24 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import AvatarStage from './components/AvatarStage';
-import Stepper from './components/Stepper';
-import RutScreen from './screens/RutScreen';
-import MenuScreen from './screens/MenuScreen';
-import EspecialidadesScreen from './screens/EspecialidadesScreen';
-import DoctoresScreen from './screens/DoctoresScreen';
-import HorariosScreen from './screens/HorariosScreen';
-import PagoScreen from './screens/PagoScreen';
-import ConfirmacionScreen from './screens/ConfirmacionScreen';
-import ReservasScreen from './screens/ReservasScreen';
-import { addReserva } from './data/reservas';
-import { tts } from './voice/tts';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import AvatarStage from './components/AvatarStage'
+import Stepper from './components/Stepper'
+import ThemeSwitcher from './components/ThemeSwitcher'
+import RutScreen from './screens/RutScreen'
+import MenuScreen from './screens/MenuScreen'
+import EspecialidadesScreen from './screens/EspecialidadesScreen'
+import DoctoresScreen from './screens/DoctoresScreen'
+import HorariosScreen from './screens/HorariosScreen'
+import PagoScreen from './screens/PagoScreen'
+import ConfirmacionScreen from './screens/ConfirmacionScreen'
+import ReservasScreen from './screens/ReservasScreen'
+import AeropuertoMenuScreen from './screens/aeropuerto/AeropuertoMenuScreen'
+import MisVuelosScreen from './screens/aeropuerto/MisVuelosScreen'
+import ReservarVueloScreen from './screens/aeropuerto/ReservarVueloScreen'
+import VueloConfirmacionScreen from './screens/aeropuerto/VueloConfirmacionScreen'
+import { addReserva } from './data/reservas'
+import { getTema } from './data/temas'
+import { tts } from './voice/tts'
 
-const PASO_POR_PANTALLA = {
+const PASO_CLINICA = {
   rut: 0,
   menu: 1,
   especialidades: 1,
@@ -21,52 +27,74 @@ const PASO_POR_PANTALLA = {
   pago: 2,
   confirmacion: 2,
   reservas: 1,
-};
+}
 
-const INACTIVIDAD_MS = 120000;
+const PASO_AEROPUERTO = {
+  rut: 0,
+  menu: 1,
+  reservar: 1,
+  misVuelos: 1,
+  confirmacion: 2,
+}
+
+const INACTIVIDAD_MS = 120000
 
 export default function App() {
-  const [screen, setScreen] = useState('rut');
-  const [rut, setRut] = useState('');
-  const [seleccion, setSeleccion] = useState({});
-  const [reservaFinal, setReservaFinal] = useState(null);
-  const [caption, setCaption] = useState(null);
+  const [temaId, setTemaId] = useState('clinica')
+  const tema = getTema(temaId)
+  const [screen, setScreen] = useState('rut')
+  const [rut, setRut] = useState('')
+  const [seleccion, setSeleccion] = useState({})
+  const [reservaFinal, setReservaFinal] = useState(null)
+  const [vueloFinal, setVueloFinal] = useState(null)
+  const [caption, setCaption] = useState(null)
 
   useEffect(() => {
-    tts.onCaption = setCaption;
+    tts.onCaption = setCaption
     return () => {
-      tts.onCaption = null;
-      tts.cancel();
-    };
-  }, []);
+      tts.onCaption = null
+      tts.cancel()
+    }
+  }, [])
 
   const reset = useCallback(() => {
-    tts.cancel();
-    setRut('');
-    setSeleccion({});
-    setReservaFinal(null);
-    setScreen('rut');
-  }, []);
+    tts.cancel()
+    setRut('')
+    setSeleccion({})
+    setReservaFinal(null)
+    setVueloFinal(null)
+    setScreen('rut')
+  }, [])
 
-  // Vuelve al inicio tras 2 minutos sin toques (comportamiento típico de tótem)
-  const idleTimer = useRef(null);
+  const cambiarTema = (nuevo) => {
+    if (nuevo === temaId) return
+    tts.cancel()
+    setTemaId(nuevo)
+    setRut('')
+    setSeleccion({})
+    setReservaFinal(null)
+    setVueloFinal(null)
+    setScreen('rut')
+  }
+
+  const idleTimer = useRef(null)
   useEffect(() => {
     const arm = () => {
-      clearTimeout(idleTimer.current);
+      clearTimeout(idleTimer.current)
       idleTimer.current = setTimeout(() => {
-        if (screen !== 'rut' && screen !== 'confirmacion') reset();
-      }, INACTIVIDAD_MS);
-    };
-    arm();
-    window.addEventListener('pointerdown', arm);
+        if (screen !== 'rut' && screen !== 'confirmacion') reset()
+      }, INACTIVIDAD_MS)
+    }
+    arm()
+    window.addEventListener('pointerdown', arm)
     return () => {
-      clearTimeout(idleTimer.current);
-      window.removeEventListener('pointerdown', arm);
-    };
-  }, [screen, reset]);
+      clearTimeout(idleTimer.current)
+      window.removeEventListener('pointerdown', arm)
+    }
+  }, [screen, reset])
 
   const confirmarPago = ({ prevision, total }) => {
-    const { especialidad, doctor, slot } = seleccion;
+    const { especialidad, doctor, slot } = seleccion
     const reserva = addReserva(rut, {
       especialidad: especialidad.nombre,
       doctor: doctor.nombre,
@@ -74,37 +102,68 @@ export default function App() {
       hora: slot.hora,
       prevision: prevision.nombre,
       total,
-    });
-    setReservaFinal(reserva);
-    setScreen('confirmacion');
-  };
+    })
+    setReservaFinal(reserva)
+    setScreen('confirmacion')
+  }
+
+  const paso =
+    temaId === 'clinica'
+      ? PASO_CLINICA[screen] ?? 0
+      : PASO_AEROPUERTO[screen] ?? 0
 
   return (
-    <div className="totem">
+    <div className="totem" data-tema={temaId}>
       <header className="totem-header">
         <div className="brand">
-          <svg className="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 21s-7.5-4.6-9.5-9A5.4 5.4 0 0 1 12 6.3 5.4 5.4 0 0 1 21.5 12c-2 4.4-9.5 9-9.5 9Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-            <path d="M7.5 12h2.4l1.2-2.4 1.8 4.4 1.2-2h2.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span className="brand-name">Clínica Inclusive</span>
+          {temaId === 'aeropuerto' ? (
+            <svg className="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M2 16h20l-2-6H4l-2 6Zm8-14 2 6h4l-2-6h-4Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinejoin="round"
+              />
+            </svg>
+          ) : (
+            <svg className="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 21s-7.5-4.6-9.5-9A5.4 5.4 0 0 1 12 6.3 5.4 5.4 0 0 1 21.5 12c-2 4.4-9.5 9-9.5 9Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M7.5 12h2.4l1.2-2.4 1.8 4.4 1.2-2h2.4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+          <span className="brand-name">{tema.brand}</span>
         </div>
-        <Stepper paso={PASO_POR_PANTALLA[screen]} />
+        <Stepper paso={paso} pasos={tema.pasos} />
       </header>
 
-      <AvatarStage caption={caption} />
+      <AvatarStage caption={caption} modelUrl={tema.avatarModel} key={tema.avatarModel} />
 
       <main className="totem-panel">
         {screen === 'rut' && (
           <RutScreen
+            tema={temaId}
             onValid={(r) => {
-              setRut(r);
-              setScreen('menu');
+              setRut(r)
+              setScreen('menu')
             }}
           />
         )}
 
-        {screen === 'menu' && (
+        {temaId === 'clinica' && screen === 'menu' && (
           <MenuScreen
             rut={rut}
             onPedirHora={() => setScreen('especialidades')}
@@ -113,39 +172,39 @@ export default function App() {
           />
         )}
 
-        {screen === 'especialidades' && (
+        {temaId === 'clinica' && screen === 'especialidades' && (
           <EspecialidadesScreen
             onSelect={(especialidad) => {
-              setSeleccion({ especialidad });
-              setScreen('doctores');
+              setSeleccion({ especialidad })
+              setScreen('doctores')
             }}
             onBack={() => setScreen('menu')}
           />
         )}
 
-        {screen === 'doctores' && (
+        {temaId === 'clinica' && screen === 'doctores' && (
           <DoctoresScreen
             especialidad={seleccion.especialidad}
             onSelect={(doctor) => {
-              setSeleccion((s) => ({ ...s, doctor }));
-              setScreen('horarios');
+              setSeleccion((s) => ({ ...s, doctor }))
+              setScreen('horarios')
             }}
             onBack={() => setScreen('especialidades')}
           />
         )}
 
-        {screen === 'horarios' && (
+        {temaId === 'clinica' && screen === 'horarios' && (
           <HorariosScreen
             doctor={seleccion.doctor}
             onSelect={(slot) => {
-              setSeleccion((s) => ({ ...s, slot }));
-              setScreen('pago');
+              setSeleccion((s) => ({ ...s, slot }))
+              setScreen('pago')
             }}
             onBack={() => setScreen('doctores')}
           />
         )}
 
-        {screen === 'pago' && (
+        {temaId === 'clinica' && screen === 'pago' && (
           <PagoScreen
             seleccion={seleccion}
             onPagado={confirmarPago}
@@ -153,18 +212,52 @@ export default function App() {
           />
         )}
 
-        {screen === 'confirmacion' && reservaFinal && (
+        {temaId === 'clinica' && screen === 'confirmacion' && reservaFinal && (
           <ConfirmacionScreen reserva={reservaFinal} onFinish={reset} />
         )}
 
-        {screen === 'reservas' && (
+        {temaId === 'clinica' && screen === 'reservas' && (
           <ReservasScreen
             rut={rut}
             onBack={() => setScreen('menu')}
             onPedirHora={() => setScreen('especialidades')}
           />
         )}
+
+        {temaId === 'aeropuerto' && screen === 'menu' && (
+          <AeropuertoMenuScreen
+            rut={rut}
+            onReservar={() => setScreen('reservar')}
+            onMisVuelos={() => setScreen('misVuelos')}
+            onSalir={reset}
+          />
+        )}
+
+        {temaId === 'aeropuerto' && screen === 'misVuelos' && (
+          <MisVuelosScreen
+            rut={rut}
+            onBack={() => setScreen('menu')}
+            onReservar={() => setScreen('reservar')}
+          />
+        )}
+
+        {temaId === 'aeropuerto' && screen === 'reservar' && (
+          <ReservarVueloScreen
+            rut={rut}
+            onReservado={(v) => {
+              setVueloFinal(v)
+              setScreen('confirmacion')
+            }}
+            onBack={() => setScreen('menu')}
+          />
+        )}
+
+        {temaId === 'aeropuerto' && screen === 'confirmacion' && vueloFinal && (
+          <VueloConfirmacionScreen reserva={vueloFinal} onFinish={reset} />
+        )}
       </main>
+
+      <ThemeSwitcher tema={temaId} onChange={cambiarTema} />
     </div>
-  );
+  )
 }

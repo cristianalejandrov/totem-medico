@@ -1,17 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { tts } from '../voice/tts'
 
-// Solo expresiones alegres / tiernas (evita tristes: F03, F04, F08)
-const EXPRESIONES_FELICES = ['f04', 'f01', 'f00', 'f06'] // sonrisa, anima, suave, sonrojada
+const EXPRESIONES_FELICES = ['f04', 'f01', 'f00', 'f06']
 
-/**
- * Escenario del avatar Live2D (mitad superior del tótem).
- * Pixi crea su propio canvas para evitar errores WebGL tras HMR.
- * Al tocar la cara/cuerpo reproduce un gesto Tap + expresión.
- */
-export default function AvatarStage({ caption }) {
+export default function AvatarStage({ caption, modelUrl = '/models/haru/haru_greeter_t03.model3.json' }) {
   const hostRef = useRef(null)
-  const [status, setStatus] = useState('cargando') // cargando | listo | error
+  const [status, setStatus] = useState('cargando')
 
   useEffect(() => {
     const host = hostRef.current
@@ -45,6 +39,7 @@ export default function AvatarStage({ caption }) {
 
     ;(async () => {
       try {
+        setStatus('cargando')
         await waitForSize()
         if (disposed) return
 
@@ -72,7 +67,7 @@ export default function AvatarStage({ caption }) {
           'position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation;cursor:pointer;'
         host.appendChild(view)
 
-        model = await Live2DModel.from('/models/haru/haru_greeter_t03.model3.json', {
+        model = await Live2DModel.from(modelUrl, {
           motionPreload: 'IDLE',
           autoInteract: false,
         })
@@ -83,7 +78,6 @@ export default function AvatarStage({ caption }) {
 
         app.stage.addChild(model)
 
-        // Toque → gesto Tap + expresión aleatoria
         model.interactive = true
         model.buttonMode = true
         model.cursor = 'pointer'
@@ -98,7 +92,7 @@ export default function AvatarStage({ caption }) {
           try {
             model.expression(expr)
           } catch {
-            /* expression opcional */
+            /* ok */
           }
         }
 
@@ -119,9 +113,7 @@ export default function AvatarStage({ caption }) {
 
         resizeObs = new ResizeObserver(() => {
           if (!app || disposed) return
-          const w = Math.max(host.clientWidth, 1)
-          const h = Math.max(host.clientHeight, 1)
-          app.renderer.resize(w, h)
+          app.renderer.resize(Math.max(host.clientWidth, 1), Math.max(host.clientHeight, 1))
           fit()
         })
         resizeObs.observe(host)
@@ -149,10 +141,10 @@ export default function AvatarStage({ caption }) {
           if (view?.parentNode) view.parentNode.removeChild(view)
         }
       } catch {
-        /* cleanup best-effort */
+        /* ok */
       }
     }
-  }, [])
+  }, [modelUrl])
 
   return (
     <div className="avatar-stage" ref={hostRef}>

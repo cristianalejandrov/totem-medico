@@ -807,3 +807,448 @@ button {
     opacity: 1;
   }
 }
+
+/* ====== Selector de tema (abajo) ====== */
+.theme-switcher {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  background: rgba(15, 23, 42, 0.72);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
+}
+
+.theme-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.65);
+  transition: background 0.15s, color 0.15s;
+}
+
+.theme-pill.active {
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.theme-pill-icon {
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ====== Tema Aeropuerto ====== */
+.totem[data-tema='aeropuerto'] {
+  --celeste: #f59e0b;
+  --celeste-oscuro: #d97706;
+  --celeste-suave: #fef3c7;
+  --celeste-borde: #fde68a;
+  --sombra: 0 4px 18px rgba(217, 119, 6, 0.15);
+}
+
+.totem[data-tema='aeropuerto'] .brand {
+  text-shadow: 0 1px 8px rgba(15, 23, 42, 0.45);
+}
+
+.totem[data-tema='aeropuerto'] .brand-icon {
+  filter: drop-shadow(0 1px 4px rgba(15, 23, 42, 0.35));
+}
+
+.totem[data-tema='aeropuerto'] .step.active .step-dot {
+  color: #1e3a5f;
+}
+
+.totem[data-tema='aeropuerto'] .avatar-stage {
+  background: linear-gradient(
+    180deg,
+    #0f172a 0%,
+    #1e3a5f 38%,
+    #334155 68%,
+    #f8fafc 100%
+  );
+}
+
+.totem[data-tema='aeropuerto'] .avatar-glow {
+  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.14), transparent 65%);
+}
+
+.totem[data-tema='aeropuerto'] .theme-pill.active {
+  color: #1e3a5f;
+}
+
+.totem[data-tema='clinica'] .theme-pill.active {
+  color: var(--celeste-oscuro);
+}
+
+/* ---- Pantallas aeropuerto ---- */
+.screen-scroll {
+  padding-bottom: 56px;
+}
+
+.totem-panel {
+  padding-bottom: 48px;
+}
+
+.field-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gris);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.segmented {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background: var(--gris-suave);
+  border-radius: 16px;
+}
+
+.segment {
+  flex: 1;
+  min-height: 52px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gris);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.segment.active {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.chip-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chip-row.scroll-x {
+  scrollbar-width: none;
+}
+
+.chip-row.scroll-x::-webkit-scrollbar {
+  display: none;
+}
+
+.chip-btn {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 2px solid var(--gris-suave);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gris);
+  background: #fff;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.chip-btn.active {
+  border-color: var(--celeste);
+  background: var(--celeste-suave);
+  color: var(--celeste-oscuro);
+}
+
+.dest-flag {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.destinos-grid .card-btn.selected {
+  border-color: var(--celeste);
+  background: var(--celeste-suave);
+}
+
+.route-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 18px;
+  border-radius: var(--radio);
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.route-sub {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.75;
+  letter-spacing: 0;
+}
+
+.flight-option {
+  align-items: flex-start;
+}
+
+.flight-price {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--celeste-oscuro);
+  white-space: nowrap;
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-radius: var(--radio);
+  background: var(--gris-suave);
+  border: 2px solid var(--celeste-borde);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--gris);
+}
+
+.summary-row strong {
+  color: var(--ink);
+  font-weight: 700;
+  text-align: right;
+}
+
+.summary-row.total {
+  padding-top: 10px;
+  border-top: 2px dashed var(--celeste-borde);
+  font-size: 16px;
+}
+
+.summary-row.total strong {
+  font-size: 24px;
+  color: var(--celeste-oscuro);
+}
+
+.stepper-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepper-mini button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--celeste-suave);
+  color: var(--celeste-oscuro);
+  font-size: 20px;
+  font-weight: 700;
+  border: 2px solid var(--celeste-borde);
+}
+
+.stepper-mini span {
+  font-size: 20px;
+  font-weight: 800;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* ---- Tarjetas de vuelo ---- */
+.flight-card {
+  border: 2px solid var(--celeste-borde);
+  border-radius: var(--radio);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff;
+}
+
+.flight-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flight-pnr {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.chip-flight {
+  background: #0f172a;
+  color: #f59e0b;
+}
+
+.flight-route {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.flight-flag {
+  font-size: 32px;
+}
+
+.flight-route strong {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.flight-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--gris-suave);
+}
+
+.flight-meta > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--gris);
+}
+
+.meta-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--celeste-oscuro);
+}
+
+.meta-strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.flight-footer {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gris);
+  padding-top: 4px;
+}
+
+.empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 32px 20px;
+  border: 2px dashed var(--celeste-borde);
+  border-radius: var(--radio);
+  text-align: center;
+  color: var(--gris);
+  font-weight: 600;
+}
+
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+/* ---- Boarding pass ---- */
+.boarding-pass {
+  width: 100%;
+  border-radius: var(--radio);
+  overflow: hidden;
+  background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 55%, #334155 100%);
+  color: #fff;
+  text-align: left;
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.3);
+  animation: fadeUp 0.4s ease-out;
+}
+
+.boarding-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 2px dashed rgba(255, 255, 255, 0.2);
+}
+
+.boarding-airline {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f59e0b;
+}
+
+.boarding-pnr {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.boarding-route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 20px;
+  gap: 12px;
+}
+
+.boarding-code {
+  display: block;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.boarding-city {
+  display: block;
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.boarding-plane {
+  font-size: 28px;
+  opacity: 0.6;
+}
+
+.boarding-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 16px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 13px;
+}
+
+.boarding-details strong {
+  display: block;
+  font-size: 15px;
+  margin: 2px 0;
+}
+
+.boarding-footer {
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fde68a;
+}
