@@ -192,13 +192,15 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
       {paso === 1 && (
         <>
           {destino && (
-            <div className="route-banner route-banner-light">
+            <div className="route-banner route-banner-fechas">
               <FlightMap pais={pais} destino={destino} compact />
-              <span className="route-codes">SCL → {destino.codigo}</span>
-              <span className="route-sub">
-                {destino.ciudad}
-                {destino.region ? ` · ${destino.region}` : ''}, {destino.pais}
-              </span>
+              <div className="route-banner-text">
+                <span className="route-codes">SCL → {destino.codigo}</span>
+                <span className="route-sub">
+                  {destino.ciudad}
+                  {destino.region ? ` · ${destino.region}` : ''}, {destino.pais}
+                </span>
+              </div>
             </div>
           )}
 

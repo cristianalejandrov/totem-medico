@@ -10,7 +10,7 @@ function pinHtml(label, kind) {
 function crearMapa(el) {
   const map = L.map(el, {
     zoomControl: false,
-    attributionControl: true,
+    attributionControl: false,
     dragging: true,
     scrollWheelZoom: false,
     doubleClickZoom: false,
@@ -19,7 +19,6 @@ function crearMapa(el) {
   })
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
     maxZoom: 18,
   }).addTo(map)
 
@@ -111,25 +110,9 @@ export default function FlightMap({ pais, destino, compact = false }) {
     setTimeout(() => map.invalidateSize(), 50)
   }, [pais, destino, compact])
 
-  const leyenda = pais ? (
-    <div className="world-map-legend">
-      <span className="world-map-flag">{pais.bandera}</span>
-      <span>
-        {destino?.ciudad ? `${destino.ciudad}, ` : ''}
-        {pais.nombre}
-        {destino?.codigo ? ` · ${destino.codigo}` : ''}
-      </span>
-    </div>
-  ) : (
-    <div className="world-map-legend world-map-legend-muted">
-      Mapa OpenStreetMap · selecciona un país
-    </div>
-  )
-
   return (
     <div className={`flight-map-wrap ${compact ? 'flight-map-compact' : ''}`}>
       <div ref={hostRef} className="flight-map" />
-      {leyenda}
     </div>
   )
 }

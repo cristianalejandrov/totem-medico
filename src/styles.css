@@ -1042,12 +1042,12 @@ button {
 
 .flight-map {
   width: 100%;
-  height: 150px;
+  height: 180px;
   z-index: 0;
 }
 
 .flight-map-compact .flight-map {
-  height: 96px;
+  height: 120px;
 }
 
 .flight-map-wrap .leaflet-container {
@@ -1219,6 +1219,38 @@ button {
   padding: 2px 8px;
   background: var(--celeste-suave);
   color: var(--celeste-oscuro);
+}
+
+.route-banner-fechas {
+  background: linear-gradient(135deg, #1b0088, #2d1b9e);
+  border: none;
+  padding: 0;
+  overflow: hidden;
+  gap: 0;
+}
+
+.route-banner-fechas .flight-map-wrap {
+  border: none;
+  border-radius: 0;
+}
+
+.route-banner-fechas .route-banner-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 14px 12px;
+  text-align: center;
+}
+
+.route-banner-fechas .route-codes {
+  color: #ffffff;
+}
+
+.route-banner-fechas .route-sub {
+  color: rgba(255, 255, 255, 0.82);
+  opacity: 1;
+  font-size: 13px;
 }
 
 .route-banner-light {
