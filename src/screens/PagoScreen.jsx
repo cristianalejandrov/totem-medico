@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import BackButton from '../components/BackButton';
 import { PREVISIONES, formatCLP, formatFecha } from '../data/catalogo';
 import { tts } from '../voice/tts';
 
@@ -34,6 +35,7 @@ export default function PagoScreen({ seleccion, onPagado, onBack }) {
 
   return (
     <div className="screen">
+      <BackButton onClick={onBack}>← Volver a horarios</BackButton>
       <h1 className="title">Pago de tu consulta</h1>
 
       <div className="resumen">
@@ -78,9 +80,6 @@ export default function PagoScreen({ seleccion, onPagado, onBack }) {
 
       <button type="button" className="btn-primary" disabled={!prevision} onClick={pagar}>
         Pagar {prevision ? formatCLP(total) : ''}
-      </button>
-      <button type="button" className="btn-ghost" onClick={onBack}>
-        ← Volver a horarios
       </button>
     </div>
   );

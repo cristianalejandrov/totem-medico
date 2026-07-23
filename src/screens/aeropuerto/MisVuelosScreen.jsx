@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react'
+import BackButton from '../../components/BackButton'
 import { formatRut } from '../../utils/rut'
 import { formatCLP, formatFechaLarga, getVuelosReservados } from '../../data/vuelos'
 import { tts } from '../../voice/tts'
@@ -18,6 +19,7 @@ export default function MisVuelosScreen({ rut, onBack, onReservar }) {
 
   return (
     <div className="screen">
+      <BackButton onClick={onBack}>← Volver</BackButton>
       <h1 className="title">Mis vuelos</h1>
       <p className="subtitle">
         Pasajero <strong>{formatRut(rut)}</strong>
@@ -72,10 +74,6 @@ export default function MisVuelosScreen({ rut, onBack, onReservar }) {
           ))
         )}
       </div>
-
-      <button type="button" className="btn-ghost" onClick={onBack}>
-        ← Volver
-      </button>
     </div>
   )
 }

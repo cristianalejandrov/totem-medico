@@ -391,6 +391,29 @@ button {
   background: var(--gris-suave);
 }
 
+.btn-back-top {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 2px;
+  margin-top: -6px;
+  margin-bottom: 2px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gris);
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.btn-back-top:active {
+  color: var(--celeste-oscuro);
+}
+
+.btn-back-top + .title {
+  margin-top: 4px;
+}
+
 /* ---- Tarjetas / grillas ---- */
 .menu-options {
   display: flex;
@@ -929,11 +952,11 @@ button {
 
 /* ---- Pantallas aeropuerto ---- */
 .screen-scroll {
-  padding-bottom: 56px;
+  padding-bottom: 20px;
 }
 
 .totem-panel {
-  padding-bottom: 48px;
+  padding-bottom: 52px;
 }
 
 .field-label {

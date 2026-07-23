@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import BackButton from '../../components/BackButton'
 import WorldMap from '../../components/WorldMap'
 import { getDestinoById, getPaisById, PAISES } from '../../data/destinos'
 import {
@@ -91,6 +92,7 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
 
   return (
     <div className="screen screen-scroll">
+      <BackButton onClick={volverDestino}>{labelVolver}</BackButton>
       <h1 className="title">Reservar vuelo</h1>
       <p className="subtitle">
         {paso === 0 && subDestino === 'pais' && 'Selecciona el país de destino'}
@@ -334,10 +336,6 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
           </button>
         </>
       )}
-
-      <button type="button" className="btn-ghost" onClick={volverDestino}>
-        {labelVolver}
-      </button>
     </div>
   )
 }

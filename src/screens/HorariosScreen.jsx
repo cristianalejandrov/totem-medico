@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import BackButton from '../components/BackButton';
 import { horariosPara, formatFecha } from '../data/catalogo';
 import { tts } from '../voice/tts';
 
@@ -14,6 +15,7 @@ export default function HorariosScreen({ doctor, onSelect, onBack }) {
 
   return (
     <div className="screen">
+      <BackButton onClick={onBack}>← Volver a doctores</BackButton>
       <h1 className="title">Elige tu horario</h1>
       <p className="subtitle">{doctor.nombre}</p>
 
@@ -42,10 +44,6 @@ export default function HorariosScreen({ doctor, onSelect, onBack }) {
           </button>
         ))}
       </div>
-
-      <button type="button" className="btn-ghost" onClick={onBack}>
-        ← Volver a doctores
-      </button>
     </div>
   );
 }

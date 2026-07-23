@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import BackButton from '../components/BackButton';
 import { getReservas } from '../data/reservas';
 import { formatCLP, formatFecha } from '../data/catalogo';
 import { formatRut } from '../utils/rut';
@@ -19,6 +20,7 @@ export default function ReservasScreen({ rut, onBack, onPedirHora }) {
 
   return (
     <div className="screen">
+      <BackButton onClick={onBack}>← Volver al menú</BackButton>
       <h1 className="title">Tus reservas</h1>
       <p className="subtitle">
         Paciente <strong>{formatRut(rut)}</strong>
@@ -52,10 +54,6 @@ export default function ReservasScreen({ rut, onBack, onPedirHora }) {
           ))}
         </div>
       )}
-
-      <button type="button" className="btn-ghost" onClick={onBack}>
-        ← Volver al menú
-      </button>
     </div>
   );
 }

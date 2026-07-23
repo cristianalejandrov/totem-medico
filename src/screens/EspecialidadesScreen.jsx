@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import BackButton from '../components/BackButton'
 import { ESPECIALIDADES } from '../data/catalogo'
 import { tts } from '../voice/tts'
 
@@ -100,6 +101,7 @@ export default function EspecialidadesScreen({ onSelect, onBack }) {
 
   return (
     <div className="screen">
+      <BackButton onClick={onBack}>← Volver</BackButton>
       <h1 className="title">Elige tu especialidad</h1>
       <p className="subtitle">Toca la especialidad que necesitas</p>
 
@@ -116,10 +118,6 @@ export default function EspecialidadesScreen({ onSelect, onBack }) {
           </button>
         ))}
       </div>
-
-      <button type="button" className="btn-ghost" onClick={onBack}>
-        ← Volver
-      </button>
     </div>
   )
 }
