@@ -107,7 +107,9 @@ export default function ReservarVueloScreen({ rut, onReservado, onBack }) {
                 : ''
 
   return (
-    <div className={`screen screen-scroll ${eligiendoCiudad ? 'screen-reserva-compact' : ''}`}>
+    <div
+      className={`screen screen-scroll ${eligiendoCiudad ? 'screen-reserva-compact' : ''} ${paso === 0 && subDestino === 'pais' ? 'screen-paises' : ''}`}
+    >
       <BackButton onClick={volverDestino}>{labelVolver}</BackButton>
 
       {!eligiendoCiudad && paso < 2 && <h1 className="title">Reservar vuelo</h1>}

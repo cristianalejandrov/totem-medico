@@ -1042,12 +1042,12 @@ button {
 
 .flight-map {
   width: 100%;
-  height: 180px;
+  height: 360px;
   z-index: 0;
 }
 
 .flight-map-compact .flight-map {
-  height: 120px;
+  height: 240px;
 }
 
 .flight-map-wrap .leaflet-container {
@@ -1170,16 +1170,34 @@ button {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  max-height: 280px;
+  align-content: start;
   overflow-y: auto;
   padding-right: 4px;
+}
+
+.screen-paises {
+  gap: 10px;
+  padding-top: 16px;
+  padding-bottom: 56px;
+}
+
+.screen-paises .title {
+  margin-top: 4px;
+}
+
+.screen-paises .subtitle {
+  margin-top: -6px;
+}
+
+.screen-paises .flight-map-wrap {
+  flex-shrink: 0;
 }
 
 .card-btn-pais {
   align-items: center;
   text-align: center;
-  padding: 14px 10px;
-  min-height: 100px;
+  padding: 12px 10px;
+  min-height: 88px;
 }
 
 .card-btn-pais .dest-flag {
