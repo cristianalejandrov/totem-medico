@@ -298,6 +298,7 @@ button {
   border-radius: var(--radio);
   padding: 20px 12px;
   margin-top: 18px;
+  margin-bottom: 16px;
 }
 
 .rut-display.rut-empty {
@@ -329,7 +330,9 @@ button {
 }
 
 .key {
-  height: 74px;
+  min-height: 78px;
+  height: auto;
+  padding: 16px 12px;
   font-size: 32px;
   font-weight: 700;
   color: var(--ink);
@@ -349,7 +352,9 @@ button {
 
 /* ---- Botones ---- */
 .btn-primary {
-  height: 64px;
+  min-height: 68px;
+  height: auto;
+  padding: 18px 24px;
   border-radius: var(--radio);
   background: var(--celeste);
   color: #fff;
@@ -372,7 +377,9 @@ button {
 }
 
 .btn-ghost {
-  height: 52px;
+  min-height: 56px;
+  height: auto;
+  padding: 14px 18px;
   border-radius: var(--radio);
   color: var(--gris);
   font-size: 15px;
