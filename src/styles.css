@@ -239,8 +239,16 @@ button {
 /* ---- Panel inferior ---- */
 .totem-panel {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 52px;
+}
+
+.totem-panel:has(.screen-paises) {
+  overflow: hidden;
 }
 
 .screen {
@@ -955,10 +963,6 @@ button {
   padding-bottom: 20px;
 }
 
-.totem-panel {
-  padding-bottom: 52px;
-}
-
 .field-label {
   font-size: 14px;
   font-weight: 700;
@@ -1176,17 +1180,50 @@ button {
 }
 
 .screen-paises {
-  gap: 10px;
-  padding-top: 16px;
-  padding-bottom: 56px;
+  flex: 1;
+  min-height: 0;
+  gap: 0;
+  padding: 12px 20px 52px;
+  overflow: hidden;
 }
 
-.screen-paises .title {
-  margin-top: 4px;
+.paises-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 0;
 }
 
-.screen-paises .subtitle {
-  margin-top: -6px;
+.paises-sticky {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fff;
+  z-index: 2;
+  padding-bottom: 8px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.paises-sticky .btn-back-top {
+  margin: 0;
+}
+
+.subtitle-paises {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gris);
+}
+
+.paises-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 10px;
+  padding-right: 2px;
 }
 
 .screen-paises .flight-map-wrap {
